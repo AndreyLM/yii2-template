@@ -9,16 +9,19 @@
 namespace domain\entities;
 
 
-class Meta
+use yii\base\Model;
+
+class Meta extends Model
 {
     public $title;
     public $description;
-    public $keyword;
+    public $keywords;
 
-    public function __construct($title, $description, $keywords)
+    public function rules()
     {
-        $this->title = $title;
-        $this->description = $description;
-        $this->keyword = $keywords;
+        return [
+            [['title', 'description', 'keywords'], 'default', 'value' => ''],
+            [['title','description','keywords'], 'string']
+        ];
     }
 }

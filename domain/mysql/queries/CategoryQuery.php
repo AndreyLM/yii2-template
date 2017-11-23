@@ -1,14 +1,18 @@
 <?php
 
 namespace domain\mysql\queries;
+use paulzi\nestedsets\NestedSetsQueryTrait;
+use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\domain\mysql\Category]].
  *
  * @see \domain\mysql\Category
  */
-class CategoryQuery extends \yii\db\ActiveQuery
+class CategoryQuery extends ActiveQuery
 {
+
+    use NestedSetsQueryTrait;
     /*public function active()
     {
         return $this->andWhere('[[status]]=1');

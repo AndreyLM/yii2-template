@@ -1,0 +1,12 @@
+{{ use('yii\widgets\DetailView') }}
+{{ use('yii/helpers/Url') }}
+
+{{ set(this, 'title', model.title) }}
+{{ set(this, 'params', { 'breadcrumbs' : { 'label' : 'Categories', 'url' : 'index'} }) }}
+
+<div class="category-view">
+
+    <p>
+        {{ Html.a('Update', Url.to(['view' , { model.id } ]), [ 'class' : 'btn btn-primary' ]) }}
+    </p>
+

@@ -14,7 +14,14 @@ use domain\entities\Category;
 interface ICategoryRepository
 {
     public function add();
-    public function delete();
-    public function save(Category $category):integer;
-    public function get(integer $id):Category;
+
+    /* @param $id int
+     * @return bool
+     * */
+    public function delete($id);
+    public function save(Category $category);
+    public function get(int $id):Category;
+
+    /* @return \domain\entities\Category[]*/
+    public function getAll():array;
 }

@@ -10,6 +10,8 @@ namespace domain\services;
 
 
 use domain\entities\Category;
+use domain\exceptions\DomainException;
+use domain\formaters\ICategoryFormatter;
 use domain\repositories\MySqlCategoryRepository;
 
 class CategoryService implements ICategoryService
@@ -21,8 +23,50 @@ class CategoryService implements ICategoryService
         $this->categoryRepository = new MySqlCategoryRepository();
     }
 
-    public function save(Category $category): integer
+    public function save(Category $category)
     {
-        $this->categoryRepository->save($category);
+        if($this->validate($category))
+            return $this->categoryRepository->save($category);
+        return false;
+    }
+
+    public function getAll(): array
+    {
+        return $this->categoryRepository->getAll();
+    }
+
+    /* @param $categories \domain\entities\Category[]
+     * @param $categoryFormatter
+     * @return mixed
+     * */
+    public function format(ICategoryFormatter $categoryFormatter, array $categories)
+    {
+        return $categoryFormatter->format($categories);
+    }
+
+    public function getOne($id): Category
+    {
+        return $this->categoryRepository->get($id);
+    }
+
+    /* @param $id int
+     * @throws DomainException
+     * @return bool
+     * */
+    public function delete($id)
+    {
+        if($id==1 || !is_int($id))
+            throw new DomainException('Impossible to delete category with such id');
+
+        return $this->categoryRepository->delete($id);
+    }
+
+    public function validate(Category $category)
+    {
+        if(!$category->validate() || !$category->getMeta()->validate()) {
+            return false;
+        }
+
+        return true;
     }
 }

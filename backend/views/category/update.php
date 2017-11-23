@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model domain\mysql\Category */
+/* @var $model domain\entities\Category */
+/* @var $meta domain\entities\Meta */
+/* @var $list */
 
 $this->title = 'Update Category: {nameAttribute}';
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
@@ -16,6 +18,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'meta' => $meta,
+        'list' => $list
     ]) ?>
 
 </div>

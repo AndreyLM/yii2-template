@@ -24,17 +24,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
-            'name',
+            [
+                    'attribute' => 'title',
+                    'value' => function(\domain\mysql\Category $category) {
+                        return str_repeat('-', $category->depth).$category->title;
+                    },
+            ],
             'description',
             'meta_json',
             //'depth',
             //'rgt',
             //'lft',
-            //'status',
+            [
+                    'attribute' => 'status',
+                    'value' => function(\domain\mysql\Category $category){
+                        return $category->status ?
+                            '<icon class="fa fa-check-square"></icon>':
+                            '<icon class="fa fa-square-o"></icon>';
+                    },
+                    'format' => 'raw',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

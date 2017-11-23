@@ -2,13 +2,15 @@
 
 namespace backend\controllers;
 
+use domain\entities\Meta;
+use domain\exceptions\DomainException;
+use domain\formaters\ArrayListCategoryFormatter;
 use domain\services\CategoryService;
 use Yii;
 use domain\entities\Category;
 use domain\mysql\searches\CategorySearch;
 use yii\base\Module;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -63,7 +65,7 @@ class CategoryController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->categoryService->getOne($id),
         ]);
     }
 
@@ -75,18 +77,8 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $this->categoryService->save($model);
-            return $this->redirect([
-                'view',
-                'id' => $this->categoryService->save($model)
-            ]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        $meta = new Meta();
+        return $this->save($model, $meta, 'create');
     }
 
     /**
@@ -97,15 +89,9 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        $model = $this->categoryService->getOne($id);
+        $meta = $model->getMeta();
+        return $this->save($model, $meta, 'update');
     }
 
     /**
@@ -116,24 +102,53 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+                $this->categoryService->delete($id);
+                \Yii::$app->session->setFlash('success', 'Category '.$id.' was removed');
+        } catch (DomainException $exception) {
+                \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Category model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Category the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    private function save(Category $model, Meta $meta, $view = 'create')
     {
-        if (($model = Category::findOne($id)) !== null) {
-            return $model;
+
+        $categories = $this->categoryService->getAll();
+        $categoriesList = $this->categoryService
+            ->format(new ArrayListCategoryFormatter(), $categories);
+
+        if($id = $this->load($model, $meta)) {
+            \Yii::$app->session->setFlash('success',
+                'Category '.$id.' was successfully '.$view.'ed');
+            return $this->redirect([
+                'view',
+                'id' => $id
+            ]);
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return $this->render($view, [
+            'model' => $model,
+            'meta' => $meta,
+            'list' => $categoriesList
+        ]);
     }
+
+    private function load(Category $category, Meta $meta)
+    {
+        $post = Yii::$app->request->post();
+        if( $category->load($post) && $meta->load($post)) {
+            $id = $this->categoryService->save($category);
+            if(!$id) {
+                \Yii::$app->session->setFlash('error', 'Please enter correct values');
+                return false;
+            }
+
+            return $id;
+        }
+
+        return false;
+    }
+
 }

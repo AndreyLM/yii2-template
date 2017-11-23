@@ -4,7 +4,7 @@ namespace domain\mysql;
 
 use domain\mysql\behaviors\MetaBehavior;
 use domain\mysql\queries\CategoryQuery;
-use Yii;
+use paulzi\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -19,6 +19,8 @@ use yii\db\ActiveRecord;
  * @property int $rgt
  * @property int $lft
  * @property int $status
+ *
+ * @property Category parent
  */
 class Category extends ActiveRecord
 {
@@ -27,7 +29,19 @@ class Category extends ActiveRecord
     public function behaviors()
     {
         return [
-            'meta' => MetaBehavior::className()
+            'meta' => MetaBehavior::className(),
+            'nestedSets' => [
+                'class' => NestedSetsBehavior::className(),
+                // 'treeAttribute' => 'tree',
+            ],
+        ];
+    }
+
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
@@ -45,7 +59,7 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'name', 'depth', 'rgt', 'lft'], 'required'],
+            [['title'], 'required'],
             [['meta_json'], 'string'],
             [['depth', 'rgt', 'lft', 'status'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],

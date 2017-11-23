@@ -17,12 +17,12 @@ class Category extends Model
     public $title;
     public $name;
     public $description;
-    public $depth;
-    public $rgt;
-    public $lft;
     public $status;
+    public $parentId;
+    public $lvl;
 
-    public $meta;
+    /* @var Meta*/
+    private $meta;
 
     public function attributeLabels()
     {
@@ -31,23 +31,28 @@ class Category extends Model
             'title' => 'Title',
             'name' => 'Name',
             'description' => 'Description',
-            'meta_json' => 'Meta Json',
-            'depth' => 'Depth',
-            'rgt' => 'Rgt',
-            'lft' => 'Lft',
-            'status' => 'Status',
+            'status' => 'Active',
+            'parent' => 'Parent',
         ];
     }
 
     public function rules()
     {
         return [
-            [['title', 'name', 'depth', 'rgt', 'lft'], 'required'],
-            [['meta_json'], 'string'],
-            [['depth', 'rgt', 'lft', 'status'], 'integer'],
+            [['title', 'name', 'parentId'], 'required'],
+            [['parentId', 'status'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
-            [['name'], 'unique'],
         ];
+    }
+
+    public function setMeta(Meta $meta) : void
+    {
+        $this->meta = $meta;
+    }
+
+    public function getMeta() : Meta
+    {
+        return $this->meta;
     }
 }
