@@ -17,15 +17,8 @@ use yii\web\NotFoundHttpException;
 class MySqlCategoryRepository implements ICategoryRepository
 {
 
-    public function add()
-    {
-        // TODO: Implement add() method.
-    }
-
-
     public function save(Category $category)
     {
-
         $category->id ?
             $arCategory = $this->find($category->id) :
             $arCategory = new ARCategory();
@@ -36,7 +29,7 @@ class MySqlCategoryRepository implements ICategoryRepository
         $this->mapToActiveRecord($category, $arCategory);
 
         if(!$arCategory->appendTo($parent)->save())
-            throw new DomainException('Cannot save category. Please check all fields');
+            throw new \RuntimeException('Cannot save category. Please check all fields');
 
         return $arCategory->id;
     }
@@ -51,25 +44,6 @@ class MySqlCategoryRepository implements ICategoryRepository
         return $category;
     }
 
-    private function mapToEntity(ARCategory $arCategory, Category $category)
-    {
-        $category->id = $arCategory->id;
-        $category->title = $arCategory->title;
-        $category->setMeta($arCategory->meta);
-        $category->description = $arCategory->description;
-        $category->name = $arCategory->name;
-        $category->status = $arCategory->status;
-        $category->lvl = $arCategory->depth;
-    }
-
-    private function mapToActiveRecord(Category $category, ARCategory $arCategory)
-    {
-        $arCategory->title = $category->title;
-        $arCategory->meta = $category->getMeta();
-        $arCategory->description = $category->description;
-        $arCategory->name = $category->name;
-        $arCategory->status = $category->status;
-    }
 
     /* @return \domain\entities\Category[] */
     public function getAll(): array
@@ -105,5 +79,26 @@ class MySqlCategoryRepository implements ICategoryRepository
         }
 
         return $arCategory;
+    }
+
+
+    private function mapToEntity(ARCategory $arCategory, Category $category)
+    {
+        $category->id = $arCategory->id;
+        $category->title = $arCategory->title;
+        $category->setMeta($arCategory->meta);
+        $category->description = $arCategory->description;
+        $category->name = $arCategory->name;
+        $category->status = $arCategory->status;
+        $category->lvl = $arCategory->depth;
+    }
+
+    private function mapToActiveRecord(Category $category, ARCategory $arCategory)
+    {
+        $arCategory->title = $category->title;
+        $arCategory->meta = $category->getMeta();
+        $arCategory->description = $category->description;
+        $arCategory->name = $category->name;
+        $arCategory->status = $category->status;
     }
 }

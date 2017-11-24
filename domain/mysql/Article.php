@@ -2,7 +2,9 @@
 
 namespace domain\mysql;
 
-use Yii;
+use domain\mysql\behaviors\MetaBehavior;
+use domain\mysql\queries\ArticleQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "article".
@@ -23,14 +25,16 @@ use Yii;
  * @property int $updated_at
  * @property int $publishing_at
  */
-class Article extends \yii\db\ActiveRecord
+class Article extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
+    public $meta;
+
     public static function tableName()
     {
-        return 'article';
+        return '{{%article}}';
     }
 
     /**
@@ -44,7 +48,7 @@ class Article extends \yii\db\ActiveRecord
             [['meta_json'], 'string'],
             [['title', 'slug'], 'string', 'max' => 256],
             [['author'], 'string', 'max' => 64],
-            [['text_intro', 'text_body', 'text_body_markdown'], 'string', 'max' => 255],
+            [['text_intro', 'text_body', 'text_body_markdown'], 'string'],
         ];
     }
 
@@ -72,12 +76,21 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'meta' => [
+                'class' => MetaBehavior::className(),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
-     * @return \domain\mysql\queries\ArticleQuery the active query used by this AR class.
+     * @return ArticleQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \domain\mysql\queries\ArticleQuery(get_called_class());
+        return new ArticleQuery(get_called_class());
     }
 }

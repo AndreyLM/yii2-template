@@ -11,8 +11,26 @@ namespace domain\repositories;
 
 interface IMenuRepository
 {
-    public function add();
-    public function delete();
-    public function update();
-    public function get();
+    /* @param $id int
+     * @throws \RuntimeException
+     * @return bool
+     * */
+    public function delete($id);
+
+    /* @param $category Category
+     * @throws DomainException
+     *  @return int
+     */
+    public function save( $category);
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Category
+     */
+    public function get(int $id):Category;
+
+    /* @throws NotFoundHttpException
+     * @return \domain\entities\Category[]
+     */
+    public function getAll():array;
 }

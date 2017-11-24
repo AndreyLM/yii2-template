@@ -55,7 +55,7 @@ class CategoryService implements ICategoryService
      * */
     public function delete($id)
     {
-        if($id==1 || !is_int($id))
+        if($id==1)
             throw new DomainException('Impossible to delete category with such id');
 
         return $this->categoryRepository->delete($id);

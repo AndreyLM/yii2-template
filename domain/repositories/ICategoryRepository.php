@@ -10,18 +10,31 @@ namespace domain\repositories;
 
 
 use domain\entities\Category;
+use domain\exceptions\DomainException;
+use yii\web\NotFoundHttpException;
 
 interface ICategoryRepository
 {
-    public function add();
-
     /* @param $id int
+     * @throws \RuntimeException
      * @return bool
      * */
     public function delete($id);
+
+    /* @param $category Category
+     * @throws DomainException
+     *  @return int
+     */
     public function save(Category $category);
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Category
+     */
     public function get(int $id):Category;
 
-    /* @return \domain\entities\Category[]*/
+    /* @throws NotFoundHttpException
+     * @return \domain\entities\Category[]
+     */
     public function getAll():array;
 }
