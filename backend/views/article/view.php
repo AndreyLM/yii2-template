@@ -1,18 +1,18 @@
 <?php
 
+use domain\entities\Article;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model domain\mysql\Article */
+/* @var $model domain\entities\Article */
+/* @var $categoryList array */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -31,18 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'slug',
-            'category_id',
-            'user_id',
+            [
+                'attribute' => 'categoryId',
+                'value' => function(Article $article) use ($categoryList)
+                {
+                    return $categoryList[$article->categoryId];
+                }
+            ],
+//            'categoryId',
+            'userId',
             'author',
-            'text_intro',
-            'text_body',
-            'text_body_markdown',
-            'meta_json',
             'status',
             'favorite',
-            'created_at',
-            'updated_at',
-            'publishing_at',
+            'createdAt',
+            'updatedAt',
+            'publishingAt',
         ],
     ]) ?>
 

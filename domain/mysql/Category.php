@@ -77,4 +77,5 @@ class Category extends ActiveRecord
     {
         return new CategoryQuery(get_called_class());
     }
+
 }

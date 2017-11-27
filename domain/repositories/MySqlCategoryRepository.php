@@ -22,13 +22,22 @@ class MySqlCategoryRepository implements ICategoryRepository
         $category->id ?
             $arCategory = $this->find($category->id) :
             $arCategory = new ARCategory();
-        $parent = $this->find($category->parentId);
 
 
 
         $this->mapToActiveRecord($category, $arCategory);
 
-        if(!$arCategory->appendTo($parent)->save())
+        if($category->parentId !== $arCategory->parent->id && $category->id !== 1)
+        {
+            $parent = $this->find($category->parentId);
+            try {
+                $arCategory->appendTo($parent);
+            } catch (\Exception $exception) {
+                throw new DomainException('Wrong parent category');
+            }
+        }
+
+        if(!$arCategory->save())
             throw new \RuntimeException('Cannot save category. Please check all fields');
 
         return $arCategory->id;

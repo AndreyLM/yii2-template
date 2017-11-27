@@ -26,38 +26,38 @@
 	            
 	            {{ detail_view_widget({
 		            'model':model,
-
+                    'attributes' : [
+                    'id',
+                    'title',
+                    'name',
+                    'description',
+                    {
+                        'attribute' : 'status',
+                        'value' : isActive,
+                        'format' : 'raw'
+                    }
+                    ],
 	            }) }}
-	            
-                {#<?= DetailView::widget([#}
-                {#'model' => $model,#}
-                {#'attributes' => [#}
-                {#'id',#}
-                {#'title',#}
-                {#'name',#}
-                {#'description',#}
-                {#'status',#}
-                {#],#}
-                {#]) ?>#}
             </div>
         </div>
-        {##}
-        {#<div class="box box-default">#}
-            {#<div class="box-header">#}
-                {#Meta#}
-            {#</div>#}
-            {#<div class="box-border">#}
-                {#<?= DetailView::widget([#}
-                {#'model' => $model->getMeta(),#}
-                {#'attributes' => [#}
-                {#'title',#}
-                {#'description',#}
-                {#'keywords',#}
-                {#],#}
-                {#]) ?>#}
-            {#</div>#}
-        {#</div>#}
-    {##}
-    {##}
+        
+        <div class="box box-default">
+            <div class="box-header">
+                Meta
+            </div>
+            <div class="box-border">
+                {{ detail_view_widget({
+                    'model' : model.getMeta(),
+                    'attributes' : [
+                    'title',
+                    'description',
+                    'keywords',
+                    ],
+                }) }}
+                
+                
+            </div>
+        </div>
+    
     </div>
 </div>

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use domain\entities\Meta;
 use domain\services\ArticleService;
+use domain\services\CategoryService;
 use DomainException;
 use Yii;
 use domain\entities\Article;
@@ -62,8 +63,11 @@ class ArticleController extends Controller
      */
     public function actionView($id)
     {
+
         return $this->render('view', [
             'model' => $this->articleService->getOne($id),
+            'categoryList' => $this->articleService
+                ->getCategoryList(new CategoryService())
         ]);
     }
 
@@ -112,10 +116,9 @@ class ArticleController extends Controller
 
     private function save(Article $model, Meta $meta, $view = 'create')
     {
-
         if($id = $this->load($model, $meta)) {
             \Yii::$app->session->setFlash('success',
-                'Category '.$id.' was successfully '.$view.'ed');
+                'Article '.$id.' was successfully '.$view.'ed');
 
             return $this->redirect([
                 'view',
@@ -123,9 +126,11 @@ class ArticleController extends Controller
             ]);
         }
 
+        $categoryList = $this->articleService->getCategoryList(new CategoryService());
         return $this->render($view, [
             'model' => $model,
             'meta' => $meta,
+            'categories' => $categoryList,
         ]);
     }
 
@@ -133,6 +138,7 @@ class ArticleController extends Controller
     {
         $post = Yii::$app->request->post();
         if( $article->load($post) && $meta->load($post)) {
+            $article->setMeta($meta);
             $id = $this->articleService->save($article);
             if(!$id) {
                 \Yii::$app->session->setFlash('error', 'Please enter correct values');

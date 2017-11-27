@@ -10,12 +10,13 @@ namespace domain\services;
 
 
 use domain\entities\Article;
+use domain\formaters\ArrayListCategoryFormatter;
 use domain\formaters\IArticleFormatter;
 use domain\repositories\MySqlArticleRepository;
 use DomainException;
 use yii\web\NotFoundHttpException;
 
-class ArticleService
+class ArticleService implements IArticleService
 {
     private $articleRepository;
 
@@ -66,9 +67,6 @@ class ArticleService
      * */
     public function delete($id)
     {
-        if(!is_int($id))
-            throw new DomainException('Impossible to delete category with such id');
-
         return $this->articleRepository->delete($id);
     }
 
@@ -79,5 +77,14 @@ class ArticleService
         }
 
         return true;
+    }
+
+    /* @param $categoryService ICategoryService
+     * @return array
+     * */
+    public function getCategoryList(ICategoryService $categoryService)
+    {
+        $categories = $categoryService->getAll();
+        return $categoryService->format(new ArrayListCategoryFormatter(), $categories);
     }
 }

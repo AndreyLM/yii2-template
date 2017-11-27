@@ -33,4 +33,10 @@ interface IArticleService
      * @return bool
      * */
     public function delete($id);
+
+    /* @param $categoryService ICategoryService
+     * @return array
+     * */
+    public function getCategoryList(ICategoryService $categoryService);
+
 }

@@ -7,16 +7,14 @@ use yii\helpers\Html;
 /* @var $meta domain\entities\Meta */
 /* @var $list */
 
-$this->title = 'Update Category: {nameAttribute}';
+$this->title = 'Update Category: '.$model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="category-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
+    <?= $this->render('_form.twig', [
         'model' => $model,
         'meta' => $meta,
         'list' => $list

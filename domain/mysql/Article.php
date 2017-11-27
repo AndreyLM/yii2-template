@@ -4,7 +4,10 @@ namespace domain\mysql;
 
 use domain\mysql\behaviors\MetaBehavior;
 use domain\mysql\queries\ArticleQuery;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "article".
@@ -43,36 +46,11 @@ class Article extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'slug', 'text_intro'], 'required'],
-            [['category_id', 'user_id', 'status', 'favorite', 'created_at', 'updated_at', 'publishing_at'], 'integer'],
-            [['meta_json'], 'string'],
+            [['title', 'text_intro'], 'required'],
+            [['category_id', 'user_id', 'status', 'favorite', 'publishing_at'], 'integer'],
             [['title', 'slug'], 'string', 'max' => 256],
             [['author'], 'string', 'max' => 64],
             [['text_intro', 'text_body', 'text_body_markdown'], 'string'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'slug' => 'Slug',
-            'category_id' => 'Category ID',
-            'user_id' => 'User ID',
-            'author' => 'Author',
-            'text_intro' => 'Text Intro',
-            'text_body' => 'Text Body',
-            'text_body_markdown' => 'Text Body Markdown',
-            'meta_json' => 'Meta Json',
-            'status' => 'Status',
-            'favorite' => 'Favorite',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'publishing_at' => 'Publishing At',
         ];
     }
 
@@ -82,6 +60,20 @@ class Article extends ActiveRecord
             'meta' => [
                 'class' => MetaBehavior::className(),
             ],
+            'slug' => [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                // 'slugAttribute' => 'slug',
+            ],
+            'datetime' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+            ],
+            'datetime2' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'publishing_at',
+            ]
         ];
     }
 

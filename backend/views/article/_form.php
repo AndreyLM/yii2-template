@@ -4,41 +4,68 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model domain\mysql\Article */
+/* @var $model domain\entities\Article */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $meta domain\entities\Meta */
+/* @var $categories array */
+
 ?>
 
 <div class="article-form">
-
     <?php $form = ActiveForm::begin(); ?>
+    <div class="box box-default">
+        <div class="box-header">
+            Common attributes
+        </div>
+        <div class="box-body">
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'categoryId')->dropDownList($categories) ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+            <?= $form->field($model, 'textIntro')->textarea() ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+            <?= $form->field($model, 'textBody')->textarea() ?>
 
-    <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'textBodyMarkdown')->textarea() ?>
 
-    <?= $form->field($model, 'text_intro')->textInput(['maxlength' => true]) ?>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <?= $form->field($model, 'status')->checkbox() ?>
+                    <?= $form->field($model, 'favorite')->checkbox() ?>
+                </div>
+                <div class="col-md-9">
+                    <?= $form->field($model, 'publishingAt')->textInput() ?>
+                </div>
+            </div>
 
-    <?= $form->field($model, 'text_body')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'text_body_markdown')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'meta_json')->textInput() ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'favorite')->textInput() ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <div class="box box-default">
+        <div class="box-header">
+            Meta attributes
+        </div>
+        <div class="box-body">
+            <?= $form->field($meta, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+            <?= $form->field($meta, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'publishing_at')->textInput() ?>
+            <?= $form->field($meta, 'keywords')->textarea() ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

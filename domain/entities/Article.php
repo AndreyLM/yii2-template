@@ -32,14 +32,15 @@ class Article extends Model
     public $publishingAt;
 
     private $meta;
+
     public function rules()
     {
         return [
-            [['title', 'slug', 'text_intro'], 'required'],
-            [['category_id', 'user_id', 'status', 'favorite', 'created_at', 'updated_at', 'publishing_at'], 'integer'],
+            [['title', 'textIntro'], 'required'],
+            [['categoryId', 'userId', 'status', 'favorite', 'createdAt', 'updatedAt', 'publishingAt'], 'integer'],
             [['title', 'slug'], 'string', 'max' => 256],
             [['author'], 'string', 'max' => 64],
-            [['text_intro', 'text_body', 'text_body_markdown'], 'string'],
+            [['textIntro', 'textBody', 'textBodyMarkdown'], 'string'],
         ];
     }
 
@@ -52,17 +53,17 @@ class Article extends Model
             'id' => 'ID',
             'title' => 'Title',
             'slug' => 'Slug',
-            'category_id' => 'Category ID',
-            'user_id' => 'User ID',
+            'categoryId' => 'Category',
+            'userId' => 'User ID',
             'author' => 'Author',
-            'text_intro' => 'Text Intro',
-            'text_body' => 'Text Body',
-            'text_body_markdown' => 'Text Body Markdown',
-            'status' => 'Status',
+            'textIntro' => 'Text Intro',
+            'textBody' => 'Text Body',
+            'textBodyMarkdown' => 'Text Body Markdown',
+            'status' => 'Active',
             'favorite' => 'Favorite',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'publishing_at' => 'Publishing At',
+            'createdAt' => 'Created At',
+            'updatedAt' => 'Updated At',
+            'publishingAt' => 'Publishing At',
         ];
     }
 

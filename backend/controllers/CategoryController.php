@@ -64,8 +64,14 @@ class CategoryController extends Controller
      */
     public function actionView($id)
     {
+        $isActive = function (Category $category) {
+            return $category->status ? '<i class="fa fa-check-circle-o fa-1g"></i>' :
+                                        '<i class="fa fa-circle-o fa-1g"></i>';
+        };
+
         return $this->render('view.twig', [
             'model' => $this->categoryService->getOne($id),
+            'isActive' => $isActive,
         ]);
     }
 
@@ -91,7 +97,7 @@ class CategoryController extends Controller
     {
         $model = $this->categoryService->getOne($id);
 
-        return $this->save($model, $model->getMeta(), 'update');
+        return $this->save($model, $model->getMeta(), 'update.twig');
     }
 
     /**

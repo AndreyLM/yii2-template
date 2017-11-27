@@ -49,6 +49,17 @@ use yii\helpers\Url;
                         ]
                     ],
                     [
+                        'label' => 'Articles',
+                        'url' => ['#'],
+                        'icon' => 'share',
+                        'items' => [
+                            ['label' => 'View all', 'icon' => 'list',
+                                    'url' => Url::to(['article/index'])],
+                            ['label' => 'Create', 'icon' => 'plus',
+                                    'url' => Url::to(['article/create'])]
+                        ]
+                    ],
+                    [
                         'label' => 'Same tools',
                         'icon' => 'share',
                         'url' => '#',

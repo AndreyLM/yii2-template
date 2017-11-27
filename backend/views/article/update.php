@@ -3,9 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model domain\mysql\Article */
+/* @var $model domain\entities\Article */
+/* @var $meta domain\entities\Meta */
+/* @var $categories array */
 
-$this->title = 'Update Article: {nameAttribute}';
+$this->title = 'Update Article: '.$model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -16,6 +18,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'meta' => $meta,
+        'categories' => $categories
     ]) ?>
 
 </div>
