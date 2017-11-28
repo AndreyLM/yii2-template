@@ -1,0 +1,34 @@
+{{ use('yii/widgets/Pjax') }}
+{{ use('yii/grid/GridView') }}
+{{ use('yii/grid/ActionColumn') }}
+
+{{ set(this, 'title', 'categories') }}
+{{ set(this, 'params', {
+	'breadcrumbs' : [
+		{ 'label' : this.title }
+	]
+}) }}
+
+<div class="category-index">
+	{{ pjax_begin() }}
+	
+	<p>{{ html.a('Create category', ['create'], { 'class': 'btn btn-success' }) | raw }}</p>
+	
+	{{ grid_view_widget({
+		'dataProvider' : dataProvider,
+		'filterModel' : searchModel,
+		'columns' : [
+			'id',
+            'description',
+            'meta_json',
+			{
+				'attribute' : 'status',
+				'value' : isActive,
+				'format' : 'raw'
+			},
+			{ 'class' : 'yii\\grid\\ActionColumn' },
+		]
+	}) }}
+	
+	{{ pjax_end() }}
+</div>

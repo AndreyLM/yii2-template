@@ -38,6 +38,17 @@ use yii\helpers\Url;
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
+                        'label' => 'Menus',
+                        'url' => ['#'],
+                        'icon' => 'share',
+                        'items' => [
+                            ['label' => 'View all', 'icon' => 'list',
+                                'url' => Url::to(['menu/index'])],
+                            ['label' => 'Create', 'icon' => 'plus',
+                                'url' => Url::to(['menu/create'])]
+                        ]
+                    ],
+                    [
                         'label' => 'Categories',
                         'url' => ['#'],
                         'icon' => 'share',

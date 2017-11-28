@@ -9,21 +9,26 @@
 namespace domain\entities\menu;
 
 
-class Menu
+use yii\base\Model;
+
+class Menu extends Model
 {
+    const TYPE_MENU = '1';
+
     public $id;
     public $title;
     public $name;
     public $description;
-    public $img;
     public $status;
+    public $type;
+
 
     public function rules()
     {
         return [
-            [['title', 'name', 'depth', 'rgt', 'lft'], 'required'],
+            [['title', 'name'], 'required'],
             [['status'], 'integer'],
-            [['title', 'description', 'img'], 'string', 'max' => 255],
+            [['title', 'description'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
         ];
     }
@@ -38,7 +43,6 @@ class Menu
             'title' => 'Title',
             'name' => 'Name',
             'description' => 'Description',
-            'img' => 'Img',
             'status' => 'Status',
         ];
     }

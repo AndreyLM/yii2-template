@@ -1,0 +1,17 @@
+{{ set(this, 'title', 'Update Article: '~model.title) }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+		{ 'label' : 'Articles', 'url' : ['index'] },
+		{ 'label' : model.title, 'url' : ['view', { 'id' : model.id }]},
+		{ 'label' : 'Update' }
+	]}) }}
+
+?>
+<div class="article-update">
+	
+	{{  this.render('_form.twig', {
+	'model' : model,
+	'meta' : meta,
+	'categories' : categories
+	}) }}
+
+</div>

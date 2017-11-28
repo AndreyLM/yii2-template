@@ -1,8 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-
-
 /* @var $this yii\web\View */
 /* @var $model domain\entities\Article */
 /* @var $meta domain\entities\Meta */

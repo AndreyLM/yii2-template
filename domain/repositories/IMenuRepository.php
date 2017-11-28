@@ -9,28 +9,43 @@
 namespace domain\repositories;
 
 
+use domain\entities\menu\Item;
+use domain\entities\menu\Menu;
+use domain\exceptions\DomainException;
+use yii\web\NotFoundHttpException;
+
 interface IMenuRepository
 {
+    /* @return Menu[] */
+    public function getMenuList();
+
+    /* @param $id int
+    * @throws NotFoundHttpException
+    * @return Menu */
+    public function getMenu($id);
+
+    /* @param $menuId int
+     * @throws NotFoundHttpException
+     * @return Item[]
+     * */
+    public function getMenuItems($menuId);
+
     /* @param $id int
      * @throws \RuntimeException
+     * @throws DomainException
      * @return bool
      * */
     public function delete($id);
 
-    /* @param $category Category
+    /* @param $menu Menu
      * @throws DomainException
      *  @return int
      */
-    public function save( $category);
+    public function saveMenu(Menu $menu);
 
-    /* @param $id int
-     * @throws NotFoundHttpException
-     * @return Category
+    /* @param $item Item
+     * @throws DomainException
+     *  @return int
      */
-    public function get(int $id):Category;
-
-    /* @throws NotFoundHttpException
-     * @return \domain\entities\Category[]
-     */
-    public function getAll():array;
+    public function saveMenuItem(Item $item);
 }

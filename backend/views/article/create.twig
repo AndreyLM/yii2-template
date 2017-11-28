@@ -1,0 +1,14 @@
+{{ set(this, 'title', 'Create Article') }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+		{ 'label' : 'Articles', 'url' : ['index']},
+		{ 'label' : this.title }
+	] }) }}
+
+<div class="article-create">
+	
+	{{ this.render('_form', {
+		'model' : model,
+		'meta' : meta,
+		'categories' : categories,
+	}) | raw }}
+</div>

@@ -1,11 +1,10 @@
-{{ set(this, 'title', 'Update Category: ' ~ model.title) }}
+{{ set(this, 'title', 'Create Category') }}
 {{ set(this, 'params', { 'breadcrumbs' : [
 	{ 'label' : 'categories', 'url' : path('category/index')},
-	{ 'label' : model.title, 'url' : path('category/view', {'id' : model.id})},
-	{ 'label' : 'update' }
+	{ 'label' : this.title }
 	]}) }}
 
-<div class="category-update">
+<div class="category-create">
 	{{ this.render('_form.twig', {
 		'model' : model,
 		'meta' : meta,

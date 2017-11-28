@@ -50,7 +50,7 @@ class ArticleController extends Controller
         $searchModel = new ArticleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -63,9 +63,13 @@ class ArticleController extends Controller
      */
     public function actionView($id)
     {
+        $categoryArr = $this->articleService->getCategoryList(new CategoryService());
 
-        return $this->render('view', [
+        return $this->render('view.twig', [
             'model' => $this->articleService->getOne($id),
+            'categoryTitle' => function(Article $article) use($categoryArr) {
+                return $categoryArr[$article->id];
+            },
             'categoryList' => $this->articleService
                 ->getCategoryList(new CategoryService())
         ]);
@@ -80,7 +84,7 @@ class ArticleController extends Controller
     {
         $model = new Article();
 
-        return $this->save($model, new Meta(), 'create');
+        return $this->save($model, new Meta(), 'create.twig');
     }
 
     /**
@@ -93,7 +97,7 @@ class ArticleController extends Controller
     {
         $model = $this->articleService->getOne($id);
 
-        return $this->save($model, $model->getMeta(), 'update');
+        return $this->save($model, $model->getMeta(), 'update.twig');
     }
 
     /**
@@ -111,10 +115,10 @@ class ArticleController extends Controller
             \Yii::$app->session->setFlash('error', $exception->getMessage());
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index.twig']);
     }
 
-    private function save(Article $model, Meta $meta, $view = 'create')
+    private function save(Article $model, Meta $meta, $view = 'create.twig')
     {
         if($id = $this->load($model, $meta)) {
             \Yii::$app->session->setFlash('success',

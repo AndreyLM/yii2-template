@@ -2,7 +2,9 @@
 
 namespace domain\mysql;
 
-use Yii;
+use domain\mysql\queries\MenuQuery;
+use paulzi\nestedsets\NestedSetsBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu".
@@ -19,14 +21,32 @@ use Yii;
  * @property int $lft
  * @property int $status
  */
-class Menu extends \yii\db\ActiveRecord
+class Menu extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'menu';
+        return '{{%menu}}';
+    }
+
+    public function behaviors()
+    {
+        return [
+            'nestedSets' => [
+                'class' => NestedSetsBehavior::className(),
+                // 'treeAttribute' => 'tree',
+            ],
+        ];
+    }
+
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
     }
 
     /**
@@ -65,10 +85,10 @@ class Menu extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \domain\mysql\queries\MenuQuery the active query used by this AR class.
+     * @return MenuQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \domain\mysql\queries\MenuQuery(get_called_class());
+        return new MenuQuery(get_called_class());
     }
 }

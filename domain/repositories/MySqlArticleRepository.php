@@ -122,7 +122,8 @@ class MySqlArticleRepository implements IArticleRepository
         $arArticle->slug = $article->slug;
         $arArticle->category_id = $article->categoryId;
         $arArticle->author = $article->author;
-        $arArticle->user_id = $article->userId;
+        $article->userId ? $arArticle = $article->userId :
+            $arArticle->user_id = \Yii::$app->user->id;
 
         $arArticle->text_intro = $article->textIntro;
         $arArticle->text_body = $article->textBody;

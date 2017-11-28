@@ -1,0 +1,61 @@
+{{ use('yii/widgets/ActiveForm') }}
+
+<div class="article-form">
+	{% set form=active_form_begin() %}
+	<div class="box box-default">
+		<div class="box-header">
+			Common attributes
+		</div>
+		<div class="box-body">
+			{{ form.field(model, 'title').textInput({'maxlength' : true}) | raw }}
+			
+			{{ form.field(model, 'slug').textInput({'maxlength' : true}) | raw }}
+			
+			<div class="row">
+				<div class="col-md-6">
+					{{ form.field(model, 'categoryId').dropDownList(categories) | raw }}
+				</div>
+				<div class="col-md-6">
+					{{ form.field(model, 'author').textInput({'maxlength' : true}) | raw }}
+				</div>
+			</div>
+			
+			{{ form.field(model, 'textIntro').textarea() | raw }}
+			
+			{{ form.field(model, 'textBody').textarea() | raw }}
+			
+			{{ form.field(model, 'textBodyMarkdown').textarea() | raw }}
+			
+			<div class="row">
+				<div class="col-sm-3 col-md-3">
+					{{ form.field(model, 'status').checkbox() | raw }}
+					{{ form.field(model, 'favorite').checkbox() | raw }}
+				</div>
+				<div class="col-md-9">
+					{{ form.field(model, 'publishingAt').textInput() | raw }}
+				</div>
+			</div>
+		
+		</div>
+	</div>
+	
+	<div class="box box-default">
+		<div class="box-header">
+			Meta attributes
+		</div>
+		<div class="box-body">
+			{{ form.field(meta, 'title').textInput({'maxlength' : true}) | raw }}
+			
+			{{ form.field(meta, 'description').textInput({'maxlength' => true}) | raw }}
+			
+			{{ form.field(meta, 'keywords').textarea() | raw }}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		{{ html.submitButton('Save', {'class' => 'btn btn-success'}) | raw }}
+	</div>
+	
+	{{ active_form_end() }}
+
+</div>

@@ -51,9 +51,14 @@ class CategoryController extends Controller
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+
+
+        return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'isActive' => function(\domain\mysql\Category $category) {
+                return $this->isActive($category);
+            }
         ]);
     }
 
@@ -84,7 +89,7 @@ class CategoryController extends Controller
     {
         $model = new Category();
 
-        return $this->save($model, new Meta(), 'create');
+        return $this->save($model, new Meta(), 'create.twig');
     }
 
     /**
@@ -156,6 +161,12 @@ class CategoryController extends Controller
         }
 
         return false;
+    }
+
+    private function isActive(\domain\mysql\Category $category)
+    {
+            return $category->status ? '<i class="fa fa-check-circle-o fa-1g"></i>' :
+                '<i class="fa fa-circle-o fa-1g"></i>';
     }
 
 }

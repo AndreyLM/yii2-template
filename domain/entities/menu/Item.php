@@ -9,19 +9,19 @@
 namespace domain\entities\menu;
 
 
-class Item
+class Item extends Menu
 {
-    public $id;
-    public $title;
-    public $name;
-    public $description;
+
     public $img;
-    public $type ;
     public $relation;
     public $depth;
-    public $rgt;
-    public $lft;
-    public $status;
+    public $menuId;
+
+    const TYPE_ITEM_CONTAINER = '2';
+    const TYPE_ITEM_TABLE_OF_CONTENT = '3';
+    const TYPE_ITEM_BLOG_ARTICLES = '4';
+    const TYPE_FAVORITE_ARTICLES = '5';
+    const TYPE_ITEM_ARTICLE = '6';
 
     public function rules()
     {
@@ -47,9 +47,18 @@ class Item
             'type' => 'Type',
             'relation' => 'Relation',
             'depth' => 'Depth',
-            'rgt' => 'Rgt',
-            'lft' => 'Lft',
-            'status' => 'Status',
+            'status' => 'Active',
+        ];
+    }
+
+    public function getItemTypes()
+    {
+        return [
+            self::TYPE_ITEM_CONTAINER => 'Item container',
+            self::TYPE_ITEM_TABLE_OF_CONTENT => 'Table of content',
+            self::TYPE_ITEM_BLOG_ARTICLES => 'Blog of articles',
+            self::TYPE_FAVORITE_ARTICLES => 'Favorite articles',
+            self::TYPE_ITEM_ARTICLE => 'Article',
         ];
     }
 }
