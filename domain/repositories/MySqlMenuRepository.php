@@ -61,15 +61,27 @@ class MySqlMenuRepository implements IMenuRepository
 
     /* @param $id int
      * @throws \RuntimeException
+     * @throws DomainException
      * @return bool
      * */
     public function delete($id)
     {
         if($id == 1)
-            throw new DomainException();
+            throw new DomainException('Cannot delete root menu container');
         $model = $this->find($id);
 
-//        if($model->hasChildren)
+        if($model->depth === 1)
+        {
+            if(!$model->deleteWithChildren())
+                throw new \RuntimeException('Problem with deleting menu');
+
+            return true;
+        }
+
+        if(!$model->delete())
+            throw new \RuntimeException('Problem with deleting menu-item');
+
+        return true;
     }
 
     /* @param $menu Menu
@@ -80,7 +92,11 @@ class MySqlMenuRepository implements IMenuRepository
     {
         $arMenu = $this->mapMenuToActiveRecord($menu);
 
-        return $this->save($arMenu);
+        $root = $this->find(1);
+        if (!$arMenu->appendTo($root)->save())
+            throw new DomainException('Cannot save. Please check your input values');
+
+        return true;
     }
 
     /* @param $item Item

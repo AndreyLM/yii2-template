@@ -16,17 +16,19 @@
         'dataProvider' : dataProvider,
 		'filterModel' : searchModel,
 		'columns' : [
-			'id',
-			'title',
-			'category_id',
-			'author',
-			'meta_json',
-			'status',
-			'favorite',
-			'created_at',
-			'updated_at',
-			'publishing_at',
-			{'class' : 'yii\\grid\\ActionColumn'},
+		{
+			'class' : 'yii\\grid\\ActionColumn',
+		},
+		'id',
+		'title',
+		'category_id',
+		'author',
+		
+		'status',
+		'favorite',
+		'created_at',
+		'updated_at',
+		'publishing_at',
 		],
 	}) }}
 	{{  pjax_end() }}

@@ -5,6 +5,7 @@ namespace domain\mysql;
 use domain\mysql\behaviors\MetaBehavior;
 use domain\mysql\queries\CategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -33,6 +34,11 @@ class Category extends ActiveRecord
             'nestedSets' => [
                 'class' => NestedSetsBehavior::className(),
                 // 'treeAttribute' => 'tree',
+            ],
+            'slug' => [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'name',
             ],
         ];
     }

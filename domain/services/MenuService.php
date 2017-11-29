@@ -38,7 +38,7 @@ class MenuService implements IMenuService
      */
     public function getMenu($id)
     {
-        $this->menuRepository->getMenu($id);
+        return $this->menuRepository->getMenu($id);
     }
 
     /* @param $menuId int
@@ -65,7 +65,12 @@ class MenuService implements IMenuService
      */
     public function saveMenu(Menu $menu)
     {
-        // TODO: Implement saveMenu() method.
+        $menu->type = Menu::TYPE_MENU;
+
+        if(!$menu->validate())
+            return false;
+
+        return $this->menuRepository->saveMenu($menu);
     }
 
     /* @param $item Item

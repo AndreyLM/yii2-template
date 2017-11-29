@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use domain\exceptions\DomainException;
+use domain\services\MenuService;
 use Yii;
-use domain\mysql\Menu;
+use domain\entities\menu\Menu;
 use domain\mysql\searches\MenuSearch;
+use yii\base\Module;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -14,6 +16,15 @@ use yii\filters\VerbFilter;
  */
 class MenuController extends Controller
 {
+    private $menuService;
+
+    public function __construct($id, Module $module, array $config = [])
+    {
+        $this->menuService = new MenuService();
+
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -52,7 +63,7 @@ class MenuController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->menuService->getMenu($id),
         ]);
     }
 
@@ -65,8 +76,15 @@ class MenuController extends Controller
     {
         $model = new Menu();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                $id = $this->menuService->saveMenu($model);
+                Yii::$app->session->setFlash('success', 'Menu was created');
+                return $this->redirect(['view', 'id' => $id]);
+            } catch (DomainException $exception) {
+                Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+
         }
 
         return $this->render('create', [
@@ -101,24 +119,13 @@ class MenuController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Menu model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Menu the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Menu::findOne($id)) !== null) {
-            return $model;
+        try {
+            $this->menuService->delete($id);
+            Yii::$app->session->setFlash('success', 'Menu was successfully deleted');
+        } catch (DomainException $exception){
+            Yii::$app->session->setFlash('error', $exception->getMessage());
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return $this->redirect(['index']);
     }
 }

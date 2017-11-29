@@ -4,6 +4,7 @@ namespace domain\mysql;
 
 use domain\mysql\queries\MenuQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -38,6 +39,11 @@ class Menu extends ActiveRecord
                 'class' => NestedSetsBehavior::className(),
                 // 'treeAttribute' => 'tree',
             ],
+            'slug' => [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'name',
+            ],
         ];
     }
 
@@ -55,7 +61,7 @@ class Menu extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'name', 'depth', 'rgt', 'lft'], 'required'],
+            [['title'], 'required'],
             [['type', 'relation', 'depth', 'rgt', 'lft', 'status'], 'integer'],
             [['title', 'description', 'img'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
@@ -63,25 +69,6 @@ class Menu extends ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'name' => 'Name',
-            'description' => 'Description',
-            'img' => 'Img',
-            'type' => 'Type',
-            'relation' => 'Relation',
-            'depth' => 'Depth',
-            'rgt' => 'Rgt',
-            'lft' => 'Lft',
-            'status' => 'Status',
-        ];
-    }
 
     /**
      * @inheritdoc

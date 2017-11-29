@@ -26,7 +26,7 @@ class Menu extends Model
     public function rules()
     {
         return [
-            [['title', 'name'], 'required'],
+            [['title'], 'required'],
             [['status'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model domain\mysql\Menu */
+/* @var $model domain\entities\menu\Menu */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
@@ -32,12 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'name',
             'description',
-            'img',
-            'type',
-            'relation',
-            'depth',
-            'rgt',
-            'lft',
             'status',
         ],
     ]) ?>
