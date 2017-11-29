@@ -47,7 +47,7 @@ class MenuService implements IMenuService
      * */
     public function getMenuItems($menuId)
     {
-        $this->getMenuItems($menuId);
+        return $this->menuRepository->getMenuItems($menuId);
     }
 
     /* @param $id int

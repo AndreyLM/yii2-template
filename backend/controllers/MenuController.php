@@ -49,7 +49,7 @@ class MenuController extends Controller
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -62,7 +62,7 @@ class MenuController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view.twig', [
             'model' => $this->menuService->getMenu($id),
         ]);
     }
@@ -74,22 +74,7 @@ class MenuController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Menu();
-
-        if ($model->load(Yii::$app->request->post())) {
-            try {
-                $id = $this->menuService->saveMenu($model);
-                Yii::$app->session->setFlash('success', 'Menu was created');
-                return $this->redirect(['view', 'id' => $id]);
-            } catch (DomainException $exception) {
-                Yii::$app->session->setFlash('error', $exception->getMessage());
-            }
-
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->save(new Menu(), 'create');
     }
 
     /**
@@ -100,15 +85,7 @@ class MenuController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->save($this->menuService->getMenu($id), 'update');
     }
 
     /**
@@ -127,5 +104,24 @@ class MenuController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    private function save(Menu $model, $view = 'create')
+    {
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                $id = $this->menuService->saveMenu($model);
+                Yii::$app->session->setFlash('success',
+                    'Menu was successfully '.$view.'ed');
+                return $this->redirect(['view', 'id' => $id]);
+            } catch (DomainException $exception) {
+                Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+
+        }
+
+        return $this->render($view.'.twig', [
+            'model' => $model,
+        ]);
     }
 }

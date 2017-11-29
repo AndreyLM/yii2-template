@@ -1,0 +1,31 @@
+{{ use('yii/grid/GridView') }}
+{{ use('yii/widgets/Pjax') }}
+{{ use('yii/grid/ActionColumn') }}
+
+{{ set(this, 'title', 'Menus') }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : model.title }
+	]}) }}
+
+<div class="menu-index">
+	
+	{{ pjax_begin() }}
+	
+	<p>
+		{{ html.a('Create Menu', path(['create']), { 'class' : 'btn btn-success'}) | raw }}
+	</p>
+	
+	{{  grid_view_widget({
+        'dataProvider' : dataProvider,
+		'filterModel' : searchModel,
+		'columns' : [
+			'id',
+			'title',
+			'name',
+			'description',
+			'status',
+			{ 'class' : 'yii\\grid\\ActionColumn'},
+		],
+	}) }}
+	{{ pjax_end() }}
+</div>

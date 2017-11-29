@@ -42,11 +42,8 @@ class MySqlArticleRepository implements IArticleRepository
 
         $this->mapToActiveRecord($article, $arArticle);
 
-//        echo var_dump($arArticle); die;
-
-        $arArticle->save();
-//        if(!$arArticle->save())
-//            throw new \RuntimeException('Cannot save article. Please check all fields');
+        if(!$arArticle->save())
+            throw new \RuntimeException('Cannot save article');
 
         return $arArticle->id;
     }

@@ -1,0 +1,12 @@
+{{ set(this, 'title', 'Menu: '~model.menu.title) }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : 'Menus', 'url' : path(['/menu/index']) },
+	{ 'label' : model.menu.title, 'url' : path('/menu/view', { 'id' : model.menu.id }) },
+	{ 'label' : 'Items' },
+	]}) }}
+
+<div class="menu-items-list">
+	{% for item in model.items %}
+		{{ item.title }}
+	{% endfor %}
+</div>

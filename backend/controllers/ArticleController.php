@@ -82,9 +82,7 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Article();
-
-        return $this->save($model, new Meta(), 'create');
+        return $this->save(new Article(), new Meta(), 'create');
     }
 
     /**
@@ -141,15 +139,15 @@ class ArticleController extends Controller
     private function load(Article $article, Meta $meta)
     {
         $post = Yii::$app->request->post();
-        if( $article->load($post) && $meta->load($post)) {
+
+        if($article->load($post) && $meta->load($post)) {
             $article->setMeta($meta);
-            $id = $this->articleService->save($article);
-            if(!$id) {
-                \Yii::$app->session->setFlash('error', 'Please enter correct values');
-                return false;
+
+            if($id = $this->articleService->save($article)) {
+                return $id;
             }
 
-            return $id;
+            \Yii::$app->session->setFlash('error', 'Please enter correct values');
         }
 
         return false;

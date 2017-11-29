@@ -47,13 +47,16 @@ class MySqlMenuRepository implements IMenuRepository
     public function getMenuItems($menuId)
     {
         $menu = $this->find($menuId);
+
         $arItems = ARMenu::find()->where(['>', 'lft', $menu->lft])
-            ->andWhere(['<', 'rgt', $menu->rgt])->all();
+            ->andWhere(['<', 'rgt', $menu->rgt])->orderBy('lft')->all();
+
         $items=[];
+        $items['menu'] = $this->mapMenuToEntity($menu);
 
         foreach ($arItems as $arItem)
         {
-            $items[] = $this->mapItemToEntity($arItem);
+            $items['items'][] = $this->mapItemToEntity($arItem);
         }
 
         return $items;
@@ -90,13 +93,15 @@ class MySqlMenuRepository implements IMenuRepository
      */
     public function saveMenu(Menu $menu)
     {
+        if($menu->id == 1)
+            throw new DomainException('Root cannot be modified');
         $arMenu = $this->mapMenuToActiveRecord($menu);
 
         $root = $this->find(1);
         if (!$arMenu->appendTo($root)->save())
             throw new DomainException('Cannot save. Please check your input values');
 
-        return true;
+        return $arMenu->id;
     }
 
     /* @param $item Item

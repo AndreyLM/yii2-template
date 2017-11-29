@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use domain\exceptions\DomainException;
+use domain\services\MenuService;
 use Yii;
-use domain\mysql\Menu;
+use domain\entities\menu\Menu;
 use domain\mysql\searches\MenuSearch;
+use yii\base\Module;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -14,6 +16,15 @@ use yii\filters\VerbFilter;
  */
 class MenuItemController extends Controller
 {
+    private $menuService;
+
+    public function __construct($id, Module $module, array $config = [])
+    {
+        $this->menuService = new MenuService();
+
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -31,16 +42,14 @@ class MenuItemController extends Controller
 
     /**
      * Lists all Menu models.
+     * @param $menuId int
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($menuId)
     {
-        $searchModel = new MenuSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        $menu = $this->menuService->getMenuItems($menuId);
+        return $this->render('index.twig',[
+           'model' => $menu
         ]);
     }
 
@@ -52,7 +61,7 @@ class MenuItemController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->menuService->getMenu($id),
         ]);
     }
 
@@ -63,15 +72,7 @@ class MenuItemController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Menu();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->save(new Menu(), 'create');
     }
 
     /**
@@ -82,15 +83,7 @@ class MenuItemController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->save($this->menuService->getMenu($id), 'update');
     }
 
     /**
@@ -101,24 +94,32 @@ class MenuItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->menuService->delete($id);
+            Yii::$app->session->setFlash('success', 'Menu was successfully deleted');
+        } catch (DomainException $exception){
+            Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Menu model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Menu the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    private function save(Menu $model, $view = 'create')
     {
-        if (($model = Menu::findOne($id)) !== null) {
-            return $model;
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                $id = $this->menuService->saveMenu($model);
+                Yii::$app->session->setFlash('success',
+                    'Menu was successfully '.$view.'ed');
+                return $this->redirect(['view', 'id' => $id]);
+            } catch (DomainException $exception) {
+                Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return $this->render($view, [
+            'model' => $model,
+        ]);
     }
 }

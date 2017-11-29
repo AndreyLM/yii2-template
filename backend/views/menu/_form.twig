@@ -1,0 +1,21 @@
+{{ use('yii/widgets/ActiveForm') }}
+
+<div class="menu-form">
+	
+	{% set form=active_form_begin() %}
+	
+	{{ form.field(model, 'title').textInput({ 'maxlength' : true }) | raw }}
+	
+	{{ form.field(model, 'name').textInput({ 'maxlength' : true }) | raw }}
+	
+	{{ form.field(model, 'description').textInput({ 'maxlength' : true }) | raw }}
+	
+	{{ form.field(model, 'status').checkbox() | raw }}
+	
+	<div class="form-group">
+		{{ html.submitButton('Save', { 'class' : 'btn btn-success' }) | raw }}
+	</div>
+	
+	{{ active_form_end() }}
+
+</div>

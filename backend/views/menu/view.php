@@ -35,5 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
         ],
     ]) ?>
-
+    <p>
+        <?= Html::a('Items', ['menu-item/index', 'menuId' => $model->id], ['class' => 'btn btn-primary']) ?>
+    </p>
 </div>

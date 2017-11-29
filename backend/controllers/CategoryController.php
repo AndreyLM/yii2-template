@@ -87,9 +87,7 @@ class CategoryController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Category();
-
-        return $this->save($model, new Meta(), 'create.twig');
+        return $this->save(new Category(), new Meta(), 'create');
     }
 
     /**
@@ -102,7 +100,7 @@ class CategoryController extends Controller
     {
         $model = $this->categoryService->getOne($id);
 
-        return $this->save($model, $model->getMeta(), 'update.twig');
+        return $this->save($model, $model->getMeta(), 'update');
     }
 
     /**
@@ -125,10 +123,8 @@ class CategoryController extends Controller
 
     private function save(Category $model, Meta $meta, $view = 'create')
     {
-
-        $categories = $this->categoryService->getAll();
         $categoriesList = $this->categoryService
-            ->format(new ArrayListCategoryFormatter(), $categories);
+            ->format(new ArrayListCategoryFormatter(), $this->categoryService->getAll());
 
         if($id = $this->load($model, $meta)) {
             \Yii::$app->session->setFlash('success',
@@ -139,7 +135,7 @@ class CategoryController extends Controller
             ]);
         }
 
-        return $this->render($view, [
+        return $this->render($view.'.twig', [
             'model' => $model,
             'meta' => $meta,
             'list' => $categoriesList
@@ -151,13 +147,12 @@ class CategoryController extends Controller
         $post = Yii::$app->request->post();
         if( $category->load($post) && $meta->load($post)) {
             $category->setMeta($meta);
-            $id = $this->categoryService->save($category);
-            if(!$id) {
-                \Yii::$app->session->setFlash('error', 'Please enter correct values');
-                return false;
-            }
 
-            return $id;
+          if($id = $this->categoryService->save($category)) {
+              return $id;
+          }
+
+            \Yii::$app->session->setFlash('error', 'Please enter correct values');
         }
 
         return false;
