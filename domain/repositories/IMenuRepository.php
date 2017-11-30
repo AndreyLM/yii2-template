@@ -31,6 +31,11 @@ interface IMenuRepository
     public function getMenuItems($menuId);
 
     /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Item */
+    public function getItem($id);
+
+    /* @param $id int
      * @throws \RuntimeException
      * @throws DomainException
      * @return bool

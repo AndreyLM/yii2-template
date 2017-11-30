@@ -4,9 +4,11 @@
 	{ 'label' : model.menu.title, 'url' : path('/menu/view', { 'id' : model.menu.id }) },
 	{ 'label' : 'Items' },
 	]}) }}
-
+<p>
+	{{ html.a('Add Item', path('create', { 'menuId' : model.menu.id }), { 'class' : 'btn btn-success' }) | raw }}
+</p>
 <div class="menu-items-list">
 	{% for item in model.items %}
-		{{ item.title }}
+		<p>{{ item.title }}</p>
 	{% endfor %}
 </div>

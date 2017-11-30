@@ -16,6 +16,7 @@ class Item extends Menu
     public $relation;
     public $depth;
     public $menuId;
+    public $parentId;
 
     const TYPE_ITEM_CONTAINER = '2';
     const TYPE_ITEM_TABLE_OF_CONTENT = '3';
@@ -26,8 +27,8 @@ class Item extends Menu
     public function rules()
     {
         return [
-            [['title', 'name', 'depth', 'rgt', 'lft'], 'required'],
-            [['type', 'relation', 'depth', 'rgt', 'lft', 'status'], 'integer'],
+            [['title', 'parentId'], 'required'],
+            [['type', 'relation', 'depth', 'status'], 'integer'],
             [['title', 'description', 'img'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
         ];
@@ -48,6 +49,7 @@ class Item extends Menu
             'relation' => 'Relation',
             'depth' => 'Depth',
             'status' => 'Active',
+            'parentId' => 'Parent',
         ];
     }
 

@@ -1,0 +1,15 @@
+{{ set(this, 'title', 'Create Item') }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : menu.title, 'url' : path('menu/view', { 'id' : menu.id }) },
+	{ 'label' : 'Items', 'url' : path('index', { 'menuId' : menu.id }) },
+	{ 'label' : 'Create' }
+	]}) }}
+
+<div class="menu-create">
+	
+	{{ this.render('_form.twig', {
+		'model' : model,
+		'list' : list
+	}) | raw }}
+
+</div>

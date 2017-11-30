@@ -9,7 +9,14 @@
 namespace domain\formaters;
 
 
+use domain\entities\menu\Item;
+use domain\entities\menu\Menu;
+
 interface IMenuFormatter
 {
-    public function format();
+    /*  @param  $menu Menu
+     * @param $items Item[]
+     * @return mixed
+     * */
+    public function format(Menu $menu, array $items);
 }

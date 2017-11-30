@@ -24,6 +24,8 @@ class CategoryController extends Controller
     public function __construct($id, Module $module, array $config = [])
     {
         $this->categoryService = new CategoryService();
+        $this->layout = 'main.twig';
+
         parent::__construct($id, $module, $config);
     }
 

@@ -2,11 +2,12 @@
 
 namespace backend\controllers;
 
+use domain\entities\menu\Item;
 use domain\exceptions\DomainException;
+use domain\formaters\ArrayListMenuItemsFormatter;
 use domain\services\MenuService;
 use Yii;
 use domain\entities\menu\Menu;
-use domain\mysql\searches\MenuSearch;
 use yii\base\Module;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -47,7 +48,7 @@ class MenuItemController extends Controller
      */
     public function actionIndex($menuId)
     {
-        $menu = $this->menuService->getMenuItems($menuId);
+        $menu = $this->menuService->getFullMenuItems($menuId);
         return $this->render('index.twig',[
            'model' => $menu
         ]);
@@ -60,30 +61,32 @@ class MenuItemController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->menuService->getMenu($id),
+        return $this->render('view.twig', [
+            'model' => $this->menuService->getItem($id),
         ]);
     }
 
     /**
      * Creates a new Menu model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param $menuId int
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($menuId)
     {
-        return $this->save(new Menu(), 'create');
+        return $this->save($menuId, new Item(), 'create');
     }
 
     /**
      * Updates an existing Menu model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
+     * @param integer $menuId
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($menuId, $id)
     {
-        return $this->save($this->menuService->getMenu($id), 'update');
+        return $this->save($menuId, $this->menuService->getItem($id), 'update');
     }
 
     /**
@@ -104,11 +107,11 @@ class MenuItemController extends Controller
         return $this->redirect(['index']);
     }
 
-    private function save(Menu $model, $view = 'create')
+    private function save(int $menuId, Item $model, $view = 'create')
     {
         if ($model->load(Yii::$app->request->post())) {
             try {
-                $id = $this->menuService->saveMenu($model);
+                $id = $this->menuService->saveMenuItem($model);
                 Yii::$app->session->setFlash('success',
                     'Menu was successfully '.$view.'ed');
                 return $this->redirect(['view', 'id' => $id]);
@@ -118,8 +121,10 @@ class MenuItemController extends Controller
 
         }
 
-        return $this->render($view, [
+        return $this->render($view.'.twig', [
             'model' => $model,
+            'menu' => $this->menuService->getMenu($menuId),
+            'list' => $this->menuService->format(new ArrayListMenuItemsFormatter(), $menuId)
         ]);
     }
 }

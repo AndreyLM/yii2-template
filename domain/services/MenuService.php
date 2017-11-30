@@ -45,9 +45,28 @@ class MenuService implements IMenuService
      * @throws NotFoundHttpException
      * @return Item[]
      * */
+    public function getFullMenuItems($menuId)
+    {
+        $fullMenu = [];
+
+        $fullMenu['menu'] = $this->getMenu($menuId);
+        $fullMenu['items'] = $this->menuRepository->getMenuItems($menuId);
+
+        return $fullMenu;
+    }
+
     public function getMenuItems($menuId)
     {
         return $this->menuRepository->getMenuItems($menuId);
+    }
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Item
+     */
+    public function getItem($id)
+    {
+        return $this->menuRepository->getItem($id);
     }
 
     /* @param $id int
@@ -79,7 +98,7 @@ class MenuService implements IMenuService
      */
     public function saveMenuItem(Item $item)
     {
-        // TODO: Implement saveMenuItem() method.
+        return $this->menuRepository->saveMenuItem($item);
     }
 
     /* @param $formatter IMenuFormatter
@@ -89,6 +108,6 @@ class MenuService implements IMenuService
      * */
     public function format(IMenuFormatter $formatter, $menuId)
     {
-        // TODO: Implement format() method.
+        return $formatter->format($this->getMenu($menuId), $this->getMenuItems($menuId));
     }
 }

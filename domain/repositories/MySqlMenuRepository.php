@@ -52,14 +52,22 @@ class MySqlMenuRepository implements IMenuRepository
             ->andWhere(['<', 'rgt', $menu->rgt])->orderBy('lft')->all();
 
         $items=[];
-        $items['menu'] = $this->mapMenuToEntity($menu);
 
         foreach ($arItems as $arItem)
         {
-            $items['items'][] = $this->mapItemToEntity($arItem);
+            $items[] = $this->mapItemToEntity($arItem);
         }
 
         return $items;
+    }
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Item
+     */
+    public function getItem($id)
+    {
+        return $this->mapItemToEntity($this->find($id));
     }
 
     /* @param $id int
@@ -110,9 +118,19 @@ class MySqlMenuRepository implements IMenuRepository
      */
     public function saveMenuItem(Item $item)
     {
+        if($item->id == 1)
+            throw new DomainException('Root cannot be modified');
+
         $arItem = $this->mapItemToActiveRecord($item);
 
-        return $this->save($arItem);
+        $parent = $this->find($item->parentId);
+
+
+
+        if (!$arItem->appendTo($parent)->save())
+            throw new DomainException('Cannot save. Please check your input values');
+
+        return $arItem->id;
     }
 
     private function mapMenuToEntity(ARMenu $arMenu):Menu
@@ -141,7 +159,8 @@ class MySqlMenuRepository implements IMenuRepository
         $item->img = $arItem->img;
         $item->relation = $arItem->relation;
         $item->depth = $arItem->depth;
-        $item->menuId = $arItem->parent->id;
+        $item->parentId = $arItem->parent->id;
+        $item->menuId = $this->getMenuIdByItem($arItem);
 
         return $item;
     }
@@ -188,5 +207,13 @@ class MySqlMenuRepository implements IMenuRepository
             throw new DomainException('Cannot save. Please check your input values');
 
         return $model->id;
+    }
+
+    private function getMenuIdByItem(ARMenu $item)
+    {
+        $menu = ARMenu::find()->where(['<', 'lft', $item->lft])
+            ->andWhere(['>', 'rgt', $item->rgt])->andWhere(['depth' => 1])->one();
+
+        return $menu->id;
     }
 }

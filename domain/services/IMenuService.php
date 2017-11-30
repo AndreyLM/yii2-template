@@ -29,12 +29,18 @@ interface IMenuService
      * @throws NotFoundHttpException
      * @return Item[]
      * */
-    public function getMenuItems($menuId);
+    public function getFullMenuItems($menuId);
 
     /* @param $id int
      * @throws \RuntimeException
      * @return bool
      * */
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Item */
+    public function getItem($id);
+
     public function delete($id);
 
     /* @param $menu Menu
@@ -55,4 +61,6 @@ interface IMenuService
      * @return mixed
      * */
     public function format(IMenuFormatter $formatter, $menuId);
+
+
 }
