@@ -13,6 +13,7 @@ use domain\entities\Category;
 use domain\exceptions\DomainException;
 use domain\formaters\ICategoryFormatter;
 use domain\repositories\MySqlCategoryRepository;
+use yii\web\NotFoundHttpException;
 
 class CategoryService implements ICategoryService
 {
@@ -23,6 +24,10 @@ class CategoryService implements ICategoryService
         $this->categoryRepository = new MySqlCategoryRepository();
     }
 
+    /* @param $category Category
+     * @throws DomainException
+     *  @return int
+     */
     public function save(Category $category)
     {
         if($this->validate($category))
@@ -30,6 +35,7 @@ class CategoryService implements ICategoryService
         return false;
     }
 
+    /* @return \domain\entities\Category[]*/
     public function getAll(): array
     {
         return $this->categoryRepository->getAll();
@@ -44,6 +50,10 @@ class CategoryService implements ICategoryService
         return $categoryFormatter->format($categories);
     }
 
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Category
+     */
     public function getOne($id): Category
     {
         return $this->categoryRepository->get($id);

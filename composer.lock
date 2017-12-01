@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1dc55e1c4dff16e9689c02846d960443",
+    "content-hash": "cb52a835e90c5ccac6a442f635357810",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -617,6 +617,53 @@
             "time": "2017-07-18T08:42:00+00:00"
         },
         {
+            "name": "masterexploder/phpthumb",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/masterexploder/PHPThumb.git",
+                "reference": "01f6aa65aa3d136e175f67da2b4ea3e316770d02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/masterexploder/PHPThumb/zipball/01f6aa65aa3d136e175f67da2b4ea3e316770d02",
+                "reference": "01f6aa65aa3d136e175f67da2b4ea3e316770d02",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPThumb": "src",
+                    "PHPThumb\\Tests": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jarrod Nettles",
+                    "email": "jarrod.nettles@icloud.com"
+                },
+                {
+                    "name": "Ian Selby",
+                    "email": "ian@gxdlabs.com"
+                }
+            ],
+            "description": "A library for manipulating images in PHP.",
+            "homepage": "https://github.com/masterexploder/PHPThumb",
+            "keywords": [
+                "image",
+                "resize",
+                "rotate"
+            ],
+            "time": "2015-09-08T22:55:44+00:00"
+        },
+        {
             "name": "paulzi/yii2-nested-sets",
             "version": "v1.0.6",
             "source": {
@@ -898,17 +945,66 @@
             "time": "2017-11-12T18:48:08+00:00"
         },
         {
+            "name": "yii-dream-team/yii2-upload-behavior",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii-dream-team/yii2-upload-behavior.git",
+                "reference": "cdb45e68014476765188c387fafcb7fd30d2ad0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii-dream-team/yii2-upload-behavior/zipball/cdb45e68014476765188c387fafcb7fd30d2ad0a",
+                "reference": "cdb45e68014476765188c387fafcb7fd30d2ad0a",
+                "shasum": ""
+            },
+            "require": {
+                "masterexploder/phpthumb": "*",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yiidreamteam\\upload\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Samoylov",
+                    "email": "alexey.samoylov@gmail.com",
+                    "homepage": "http://yiidreamteam.com/team/alexey",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Yii2 file/image upload behavior for ActiveRecord",
+            "homepage": "http://yiidreamteam.com/yii2/upload-behavior",
+            "keywords": [
+                "Behavior",
+                "file",
+                "image",
+                "resize",
+                "thumb",
+                "upload"
+            ],
+            "time": "2017-10-26T15:44:40+00:00"
+        },
+        {
             "name": "yiisoft/yii2",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "da26fa9e3e8560426dcc5bc30a35ab9f92b5a092"
+                "reference": "6fad94afce7e1645186d2cc96a0c81328ec86516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/da26fa9e3e8560426dcc5bc30a35ab9f92b5a092",
-                "reference": "da26fa9e3e8560426dcc5bc30a35ab9f92b5a092",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/6fad94afce7e1645186d2cc96a0c81328ec86516",
+                "reference": "6fad94afce7e1645186d2cc96a0c81328ec86516",
                 "shasum": ""
             },
             "require": {
@@ -995,7 +1091,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2017-11-26T06:43:05+00:00"
+            "time": "2017-12-01T08:30:41+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1456,12 +1552,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "9cda1a418ca4b2b71c9b921ebaea6c2e61e270b4"
+                "reference": "493d896b3f4a6c09ab737d53777bcfec5ff1daf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/9cda1a418ca4b2b71c9b921ebaea6c2e61e270b4",
-                "reference": "9cda1a418ca4b2b71c9b921ebaea6c2e61e270b4",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/493d896b3f4a6c09ab737d53777bcfec5ff1daf1",
+                "reference": "493d896b3f4a6c09ab737d53777bcfec5ff1daf1",
                 "shasum": ""
             },
             "require": {
@@ -1498,7 +1594,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-11-13T07:51:09+00:00"
+            "time": "2017-11-30T21:42:10+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1571,12 +1667,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "b270f34b740863c588a3f65f5ab7a3afa38a81e5"
+                "reference": "103e21127bc63462af5f5165064cdd960f95fa14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b270f34b740863c588a3f65f5ab7a3afa38a81e5",
-                "reference": "b270f34b740863c588a3f65f5ab7a3afa38a81e5",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/103e21127bc63462af5f5165064cdd960f95fa14",
+                "reference": "103e21127bc63462af5f5165064cdd960f95fa14",
                 "shasum": ""
             },
             "require": {
@@ -1585,9 +1681,14 @@
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^4.1"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "DeepCopy\\": "src/DeepCopy/"
@@ -1608,7 +1709,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-20T11:34:00+00:00"
+            "time": "2017-11-29T14:36:38+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1772,22 +1873,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "1119a9765990a24f4c5218a85032fb6f3a91eaff"
+                "reference": "c19b4d170c5a9cc9d93d3d63d7125f894f2726b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/1119a9765990a24f4c5218a85032fb6f3a91eaff",
-                "reference": "1119a9765990a24f4c5218a85032fb6f3a91eaff",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/c19b4d170c5a9cc9d93d3d63d7125f894f2726b1",
+                "reference": "c19b4d170c5a9cc9d93d3d63d7125f894f2726b1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
-                "phpdocumentor/reflection-common": "^1.0.0",
-                "phpdocumentor/type-resolver": "^0.4.0",
+                "php": "^7.1",
+                "phpdocumentor/reflection-common": "^1.0",
+                "phpdocumentor/type-resolver": "^0.4",
                 "webmozart/assert": "^1.0"
             },
             "require-dev": {
-                "doctrine/instantiator": "~1.0.5",
+                "doctrine/instantiator": "^1.0",
                 "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "^6.4"
             },
@@ -1799,9 +1900,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "phpDocumentor\\Reflection\\": [
-                        "src/"
-                    ]
+                    "phpDocumentor\\Reflection\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1815,7 +1914,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-11-15T19:01:54+00:00"
+            "time": "2017-11-30T09:27:01+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -1966,81 +2065,17 @@
             "time": "2017-11-24T13:59:53+00:00"
         },
         {
-            "name": "phpunit/php-code-coverage",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "033ec97498cf530cc1be4199264cad568b19be26"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/033ec97498cf530cc1be4199264cad568b19be26",
-                "reference": "033ec97498cf530cc1be4199264cad568b19be26",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-xmlwriter": "*",
-                "php": "^7.0",
-                "phpunit/php-file-iterator": "^1.4.2",
-                "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-token-stream": "^2.0.1",
-                "sebastian/code-unit-reverse-lookup": "^1.0.1",
-                "sebastian/environment": "^3.0",
-                "sebastian/version": "^2.0.1",
-                "theseer/tokenizer": "^1.1"
-            },
-            "require-dev": {
-                "ext-xdebug": "^2.5",
-                "phpunit/phpunit": "^6.0"
-            },
-            "suggest": {
-                "ext-xdebug": "^2.5.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.2.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sb@sebastian-bergmann.de",
-                    "role": "lead"
-                }
-            ],
-            "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
-            "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
-            "keywords": [
-                "coverage",
-                "testing",
-                "xunit"
-            ],
-            "time": "2017-11-27T09:00:30+00:00"
-        },
-        {
             "name": "phpunit/php-file-iterator",
             "version": "1.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "50c785435c185982fe1018169b4db0f011088d92"
+                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/50c785435c185982fe1018169b4db0f011088d92",
-                "reference": "50c785435c185982fe1018169b4db0f011088d92",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/730b01bc3e867237eaac355e06a36b85dd93a8b4",
+                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4",
                 "shasum": ""
             },
             "require": {
@@ -2074,7 +2109,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2017-11-27T07:45:00+00:00"
+            "time": "2017-11-27T13:52:08+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -2172,25 +2207,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "13eb9aba9626b1a3811c6a492acc9669d24bb85a"
+                "reference": "a60fc2ad92986d9f951a91012c5083eed3b2a92a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/13eb9aba9626b1a3811c6a492acc9669d24bb85a",
-                "reference": "13eb9aba9626b1a3811c6a492acc9669d24bb85a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/a60fc2ad92986d9f951a91012c5083eed3b2a92a",
+                "reference": "a60fc2ad92986d9f951a91012c5083eed3b2a92a",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": "^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2.4"
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -2213,7 +2248,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-11-27T08:47:38+00:00"
+            "time": "2017-11-28T13:47:13+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -2221,12 +2256,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a94c40a53b3a82f55807ce4b13395e4e765d1ca2"
+                "reference": "4ab66ee50ca3d66d86de6baa7613779c9c03515e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a94c40a53b3a82f55807ce4b13395e4e765d1ca2",
-                "reference": "a94c40a53b3a82f55807ce4b13395e4e765d1ca2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ab66ee50ca3d66d86de6baa7613779c9c03515e",
+                "reference": "4ab66ee50ca3d66d86de6baa7613779c9c03515e",
                 "shasum": ""
             },
             "require": {
@@ -2297,7 +2332,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-11-16T10:00:54+00:00"
+            "time": "2017-11-27T14:35:06+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3122,12 +3157,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "72b0921e1c59928b61be8b7a7a98ae5a4f2a02e1"
+                "reference": "9468ad3fba3a5e1f0dc12a96e50e84cddb923cf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/72b0921e1c59928b61be8b7a7a98ae5a4f2a02e1",
-                "reference": "72b0921e1c59928b61be8b7a7a98ae5a4f2a02e1",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9468ad3fba3a5e1f0dc12a96e50e84cddb923cf0",
+                "reference": "9468ad3fba3a5e1f0dc12a96e50e84cddb923cf0",
                 "shasum": ""
             },
             "require": {
@@ -3183,7 +3218,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-19T18:41:20+00:00"
+            "time": "2017-11-29T13:28:14+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -3468,12 +3503,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "14568820af0af65e8ae97c3999b58cc94ea408bf"
+                "reference": "b3d0c9c11be3831b84825967dc6b52b5a7b84e04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/14568820af0af65e8ae97c3999b58cc94ea408bf",
-                "reference": "14568820af0af65e8ae97c3999b58cc94ea408bf",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/b3d0c9c11be3831b84825967dc6b52b5a7b84e04",
+                "reference": "b3d0c9c11be3831b84825967dc6b52b5a7b84e04",
                 "shasum": ""
             },
             "require": {
@@ -3518,7 +3553,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-10T19:03:56+00:00"
+            "time": "2017-11-29T13:28:14+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -3710,12 +3745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-gii.git",
-                "reference": "9ca7aa0ea1d7def18fa138e3111a3e7746b40859"
+                "reference": "9be77c1ade3a1990b1ab69ca617bed3372c09118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/9ca7aa0ea1d7def18fa138e3111a3e7746b40859",
-                "reference": "9ca7aa0ea1d7def18fa138e3111a3e7746b40859",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/9be77c1ade3a1990b1ab69ca617bed3372c09118",
+                "reference": "9be77c1ade3a1990b1ab69ca617bed3372c09118",
                 "shasum": ""
             },
             "require": {
@@ -3755,7 +3790,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2017-11-25T12:25:21+00:00"
+            "time": "2017-11-27T20:10:28+00:00"
         }
     ],
     "aliases": [],

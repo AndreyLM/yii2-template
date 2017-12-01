@@ -10,15 +10,25 @@ namespace domain\services;
 
 
 use domain\entities\Category;
+use domain\exceptions\DomainException;
 use domain\formaters\ICategoryFormatter;
+use yii\web\NotFoundHttpException;
 
 interface ICategoryService
 {
+    /* @param $category Category
+     * @throws DomainException
+     *  @return int
+     */
     public function save(Category $category);
 
     /* @return \domain\entities\Category[]*/
     public function getAll():array;
 
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return Category
+     */
     public function getOne($id):Category;
 
     /* @param $categories \domain\entities\Category[]
@@ -28,6 +38,7 @@ interface ICategoryService
     public function format(ICategoryFormatter $categoryFormatter, array $categories);
 
     /* @param $id int
+     * @throws DomainException
      * @return bool
      * */
     public function delete($id);
