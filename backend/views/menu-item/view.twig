@@ -3,6 +3,8 @@
 {{ set(this, 'title', model.title) }}
 {{ set(this, 'params', { 'breadcrumbs' : [
 	{ 'label' : 'Menus', 'url' : path(['/menu/index']) },
+	{ 'label' : model.menu.title, 'url' : path('/menu/view', { 'id' : model.menu.id }) },
+	{ 'label' : 'items', 'url' : path('menu-item/index', { 'menuId' : model.menu.id }) },
 	{ 'label' : model.title },
 	]}) }}
 
@@ -11,7 +13,7 @@
 	<p>
 		{{  html.a('Update', path('update', { 'menuId' : model.parentId, 'id' : model.id }),
 		{ 'class' : 'btn btn-primary'}) | raw }}
-		{{  html.a('Delete', path('delete', { 'id' : model.id }), {
+		{{  html.a('Delete', path('delete', { 'menuId' : model.menu.id', id' : model.id }), {
 			'class' : 'btn btn-danger',
 			'data' : {
 				'confirm' : 'Are you sure you want to delete this item?',
@@ -27,7 +29,12 @@
 		'title',
 		'name',
 		'description',
+		{
+			'attribute' : 'parentId',
+			'value' : model.parentId
+		},
 		'status',
+		'img'
 		],
 	}) }}
 	

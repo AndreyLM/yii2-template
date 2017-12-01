@@ -1,0 +1,18 @@
+{{ set(this, 'title', 'Update Item: '~model.title) }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : 'Menus', 'url' : path(['menu/index']) },
+	{ 'label' : model.menu.title, 'url' : path('menu/view', { 'id' : model.menu.id }) },
+	{ 'label' : 'Items', 'url' : path('menu-item/index',
+				{ 'menuId' :model.menu.id, 'id' : model.menu.id }) },
+	{ 'label' : model.title, 'url' : path('view', { 'id' : model.id }) },
+	{ 'label' : 'Update' }
+	]}) }}
+
+<div class="menu-create">
+	
+	{{ this.render('_form.twig', {
+		'model' : model,
+		'list' : list
+	}) | raw }}
+
+</div>

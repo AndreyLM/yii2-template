@@ -62,7 +62,7 @@ class MenuSearch extends Menu
             'id' => $this->id,
             'type' => $this->type,
             'relation' => $this->relation,
-            'depth' => $this->depth,
+            'depth' => 1,
             'rgt' => $this->rgt,
             'lft' => $this->lft,
             'status' => $this->status,

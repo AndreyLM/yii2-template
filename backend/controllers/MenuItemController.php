@@ -7,7 +7,6 @@ use domain\exceptions\DomainException;
 use domain\formaters\ArrayListMenuItemsFormatter;
 use domain\services\MenuService;
 use Yii;
-use domain\entities\menu\Menu;
 use yii\base\Module;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -93,9 +92,10 @@ class MenuItemController extends Controller
      * Deletes an existing Menu model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
+     * @param integer $menuId
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($menuId,$id)
     {
         try {
             $this->menuService->delete($id);
@@ -104,16 +104,20 @@ class MenuItemController extends Controller
             Yii::$app->session->setFlash('error', $exception->getMessage());
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'menuId' => $menuId]);
     }
 
     private function save(int $menuId, Item $model, $view = 'create')
     {
+        if(!$model->id) {
+            $model->menu = $this->menuService->getMenu($menuId);
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             try {
                 $id = $this->menuService->saveMenuItem($model);
                 Yii::$app->session->setFlash('success',
-                    'Menu was successfully '.$view.'ed');
+                    'Item was successfully '.$view.'d');
                 return $this->redirect(['view', 'id' => $id]);
             } catch (DomainException $exception) {
                 Yii::$app->session->setFlash('error', $exception->getMessage());
@@ -123,7 +127,6 @@ class MenuItemController extends Controller
 
         return $this->render($view.'.twig', [
             'model' => $model,
-            'menu' => $this->menuService->getMenu($menuId),
             'list' => $this->menuService->format(new ArrayListMenuItemsFormatter(), $menuId)
         ]);
     }

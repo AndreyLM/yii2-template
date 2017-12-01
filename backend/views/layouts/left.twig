@@ -31,9 +31,7 @@
                 'options' : { 'class' : 'sidebar-menu tree', 'data-widget' : 'tree' },
 				'items' : [
 		{ 'label' : 'Menu Yii2', 'options' : { 'class' : 'header' }},
-		{ 'label' : 'Gii', 'icon' : 'file-code-o', 'url' : path(['/gii'])},
-		{ 'label' : 'Debug', 'icon' : 'dashboard', 'url' : path['/debug']},
-		{ 'label' : 'Login', 'url' : path(['site/login']), 'visible' : Yii.app.user.isGuest},
+		{ 'label' : 'Login', 'url' : path(['site/login']), 'visible' : app.user.isGuest},
 		{
 			'label' : 'Menus',
 			'url' : path(['#']),
@@ -42,7 +40,38 @@
 				{ 'label' : 'View all', 'icon' : 'list', 'url' : path(['menu/index'])},
 				{ 'label' : 'Create', 'icon' : 'plus', 'url' : path(['menu/create'])}
 			]
-		}] }) }}
+		},
+		{
+			'label' : 'Categories',
+			'url' : path(['#']),
+			'icon' : 'share',
+			'items' : [
+				{ 'label' : 'View all', 'icon' : 'list', 'url' : path(['category/index'])},
+				{ 'label' : 'Create', 'icon' : 'plus', 'url' : path(['category/create'])}
+			]
+		},
+		{
+			'label' : 'Articles',
+			'url' : path(['#']),
+			'icon' : 'share',
+			'items' : [
+				{ 'label' : 'View all', 'icon' : 'list', 'url' : path(['article/index'])},
+				{ 'label' : 'Create', 'icon' : 'plus', 'url' : path(['article/create'])}
+			]
+		},
+		
+		{
+			'label' : 'Same tools',
+			'icon' : 'share',
+			'url': '#',
+			'items' : [
+			{ 'label': 'Gii', 'icon' : 'file-code-o', 'url' : path(['/gii']) },
+			{ 'label' : 'Debug', 'icon' : 'dashboard', 'url' : path(['/debug']) },
+			],
+		},
+			
+			]
+		}) }}
 		
 	
 	</section>

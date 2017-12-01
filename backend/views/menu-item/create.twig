@@ -1,7 +1,7 @@
 {{ set(this, 'title', 'Create Item') }}
 {{ set(this, 'params', { 'breadcrumbs' : [
-	{ 'label' : menu.title, 'url' : path('menu/view', { 'id' : menu.id }) },
-	{ 'label' : 'Items', 'url' : path('index', { 'menuId' : menu.id }) },
+	{ 'label' : model.menu.title, 'url' : path('menu/view', { 'id' : model.menu.id }) },
+	{ 'label' : 'Items', 'url' : path('index', { 'menuId' : model.menu.id }) },
 	{ 'label' : 'Create' }
 	]}) }}
 

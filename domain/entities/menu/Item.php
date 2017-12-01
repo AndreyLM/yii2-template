@@ -15,7 +15,9 @@ class Item extends Menu
     public $img;
     public $relation;
     public $depth;
-    public $menuId;
+
+    /* @var Menu*/
+    public $menu;
     public $parentId;
 
     const TYPE_ITEM_CONTAINER = '2';

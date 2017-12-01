@@ -12,7 +12,7 @@
 <head>
 	<meta charset="{{ app.charset }}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<?= Html::csrfMetaTags() ?>
+	{{ html.csrfMetaTags | raw }}
 	<title>{{ html.encode(this.title) }}</title>
 	{{  this.head() }}
 </head>

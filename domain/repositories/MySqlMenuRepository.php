@@ -160,7 +160,7 @@ class MySqlMenuRepository implements IMenuRepository
         $item->relation = $arItem->relation;
         $item->depth = $arItem->depth;
         $item->parentId = $arItem->parent->id;
-        $item->menuId = $this->getMenuIdByItem($arItem);
+        $item->menu = $this->mapMenuToEntity($this->getMenuByItem($arItem));
 
         return $item;
     }
@@ -209,11 +209,11 @@ class MySqlMenuRepository implements IMenuRepository
         return $model->id;
     }
 
-    private function getMenuIdByItem(ARMenu $item)
+    private function getMenuByItem(ARMenu $item)
     {
         $menu = ARMenu::find()->where(['<', 'lft', $item->lft])
             ->andWhere(['>', 'rgt', $item->rgt])->andWhere(['depth' => 1])->one();
 
-        return $menu->id;
+        return $menu;
     }
 }
