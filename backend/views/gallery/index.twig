@@ -2,3 +2,16 @@
 {{ set(this, 'params', { 'breadcrumbs' : [
 	{ 'label' : 'Galleries' }
 ]}) }}
+
+
+<div class="gallery-index">
+
+	<p>
+		{{  html.a('Create Gallery', path(['create']), { 'class' : 'btn btn-success'}) | raw }}
+	</p>
+	
+	{% for gallery in model %}
+		<p>{{ gallery.title }}</p>
+	{% endfor %}
+	
+</div>

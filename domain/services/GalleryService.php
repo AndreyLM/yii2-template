@@ -11,6 +11,7 @@ namespace domain\services;
 
 use domain\entities\gallery\Gallery;
 use domain\exceptions\DomainException;
+use domain\forms\UploadForm;
 use domain\repositories\MySqlGalleryRepository;
 use http\Exception\RuntimeException;
 use yii\web\NotFoundHttpException;
@@ -65,5 +66,15 @@ class GalleryService implements IGalleryService
             throw new DomainException('Please enter correct values');
 
         return true;
+    }
+
+    /* @param $galleryId int
+     * @param $photosForm \domain\forms\UploadForm
+     * @throws DomainException
+     * @return bool
+     */
+    public function addPhotos($galleryId, UploadForm $photosForm)
+    {
+        return $this->galleryRepository->addPhotos($galleryId, $photosForm);
     }
 }

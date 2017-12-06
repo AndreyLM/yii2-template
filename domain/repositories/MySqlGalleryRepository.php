@@ -10,8 +10,10 @@ namespace domain\repositories;
 
 
 use domain\entities\gallery\Gallery;
+use domain\forms\UploadForm;
 use domain\mysql\Gallery as ARGallery;
 use domain\exceptions\DomainException;
+use domain\mysql\Photo;
 use yii\web\NotFoundHttpException;
 
 class MySqlGalleryRepository implements IGalleryRepository
@@ -46,7 +48,7 @@ class MySqlGalleryRepository implements IGalleryRepository
      */
     public function save(Gallery $gallery)
     {
-        $arGallery = $this->mapGallaryToAR($gallery);
+        $arGallery = $this->mapGalleryToAR($gallery);
 
         if(!$arGallery->save())
             throw new \RuntimeException('Cannot save gallery');
@@ -86,7 +88,7 @@ class MySqlGalleryRepository implements IGalleryRepository
         return $gallery;
     }
 
-    private function mapGallaryToAR(Gallery $gallery)
+    private function mapGalleryToAR(Gallery $gallery)
     {
         $gallery->id ? $arGallery = $this->find($gallery->id) : $arGallery = new ARGallery();
 
@@ -94,5 +96,23 @@ class MySqlGalleryRepository implements IGalleryRepository
         $arGallery->name = $gallery->name;
 
         return $arGallery;
+    }
+
+    /* @param $galleryId int
+     * @param $photosForm \domain\forms\UploadForm
+     * @throws DomainException
+     * @return bool
+     */
+    public function addPhotos($galleryId, UploadForm $photosForm)
+    {
+        foreach ($photosForm->files as $file) {
+            $photo = new Photo();
+            $photo->gallery_id = $galleryId;
+            $photo->file = $file;
+            if(!$photo->save())
+                throw new DomainException('Cannot upload some file');
+        }
+
+        return true;
     }
 }

@@ -9,7 +9,7 @@
 
 	{{  pjax_begin() }}
 	<p>
-		{{  html.a('Create Article', ['create'], { 'class' : 'btn btn-success'}) | raw }}
+		{{  html.a('Create Article', path(['create']), { 'class' : 'btn btn-success'}) | raw }}
 	</p>
 	
 	{{ grid_view_widget({

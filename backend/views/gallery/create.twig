@@ -1,0 +1,11 @@
+{{ set(this, 'title', 'Create Gallery') }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : 'galleries', 'url' : path('gallery/index')},
+	{ 'label' : this.title }
+	]}) }}
+
+<div class="category-create">
+	{{ this.render('_form.twig', {
+		'model' : model }) | raw
+	}}
+</div>

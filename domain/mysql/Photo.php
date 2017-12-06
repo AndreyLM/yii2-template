@@ -2,7 +2,8 @@
 
 namespace domain\mysql;
 
-use Yii;
+use yii\db\ActiveRecord;
+use yiidreamteam\upload\ImageUploadBehavior;
 
 /**
  * This is the model class for table "photo".
@@ -14,56 +15,36 @@ use Yii;
  *
  * @property Gallery $gallery
  */
-class Photo extends \yii\db\ActiveRecord
+class Photo extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'photo';
+        return '{{%photo}}';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function behaviors(): array
     {
         return [
-            [['gallery_id', 'file', 'sort'], 'required'],
-            [['gallery_id', 'sort'], 'integer'],
-            [['file'], 'string', 'max' => 255],
-            [['gallery_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gallery::className(), 'targetAttribute' => ['gallery_id' => 'id']],
+            [
+                'class' => ImageUploadBehavior::className(),
+                'attribute' => 'file',
+                'createThumbsOnRequest' => true,
+                'filePath' => '@staticRoot/origin/galleries/[[attribute_gallery_id]]/[[id]].[[extension]]',
+                'fileUrl' => '@static/origin/galleries/[[attribute_gallery_id]]/[[id]].[[extension]]',
+                'thumbPath' => '@staticRoot/cache/galleries/[[attribute_gallery_id]]/[[profile]]_[[id]].[[extension]]',
+                'thumbUrl' => '@static/cache/galleries/[[attribute_gallery_id]]/[[profile]]_[[id]].[[extension]]',
+                'thumbs' => [
+                    'admin' => ['width' => 100, 'height' => 70],
+                    'thumb' => ['width' => 640, 'height' => 480],
+                    'cart_list' => ['width' => 150, 'height' => 150],
+                    'cart_widget_list' => ['width' => 57, 'height' => 57],
+                    'catalog_list' => ['width' => 228, 'height' => 228],
+
+                ],
+            ],
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'gallery_id' => 'Gallery ID',
-            'file' => 'File',
-            'sort' => 'Sort',
-        ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGallery()
-    {
-        return $this->hasOne(Gallery::className(), ['id' => 'gallery_id']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return \domain\mysql\queries\PhotoQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \domain\mysql\queries\PhotoQuery(get_called_class());
     }
 }

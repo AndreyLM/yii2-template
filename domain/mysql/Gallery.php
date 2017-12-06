@@ -3,6 +3,7 @@
 namespace domain\mysql;
 
 use domain\mysql\queries\GalleryQuery;
+use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -32,7 +33,17 @@ class Gallery extends ActiveRecord
         return [
             [['title', 'name'], 'required'],
             [['title'], 'string', 'max' => 128],
-            [['name'], 'string', 'max' => 192],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'slug' => [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'name',
+            ]
         ];
     }
 

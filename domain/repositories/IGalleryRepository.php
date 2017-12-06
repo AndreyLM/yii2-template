@@ -11,6 +11,7 @@ namespace domain\repositories;
 
 use domain\entities\gallery\Gallery;
 use domain\exceptions\DomainException;
+use domain\forms\UploadForm;
 use yii\web\NotFoundHttpException;
 
 interface IGalleryRepository
@@ -36,4 +37,11 @@ interface IGalleryRepository
      * @return bool
      */
     public function delete($id);
+
+    /* @param $galleryId int
+     * @param $photosForm \domain\forms\UploadForm
+     * @throws DomainException
+     * @return bool
+     */
+    public function addPhotos($galleryId, UploadForm $photosForm);
 }

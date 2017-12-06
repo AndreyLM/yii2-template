@@ -11,6 +11,7 @@ namespace backend\controllers;
 
 use domain\entities\gallery\Gallery;
 use domain\exceptions\DomainException;
+use domain\forms\UploadForm;
 use domain\services\GalleryService;
 use yii\base\Module;
 use yii\filters\VerbFilter;
@@ -46,6 +47,28 @@ class GalleryController extends Controller
         ]);
     }
 
+    public function actionView($id)
+    {
+        $gallery = $this->galleryService->getOne($id);
+
+        $photoUploadForm = new UploadForm();
+
+        if($photoUploadForm->load(\Yii::$app->request->post()) && $photoUploadForm->validate()) {
+            try {
+                $this->galleryService->addPhotos($gallery->id, $photoUploadForm);
+                \Yii::$app->session->setFlash('success', 'Photos were successfully uploaded');
+                return $this->render('view.twig', ['id' => $gallery->id ]);
+            } catch (DomainException $exception) {
+                \Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+        }
+
+        return $this->render('view.twig', [
+           'model' => $gallery,
+           'photos' => $photoUploadForm,
+        ]);
+    }
+
     public function actionCreate()
     {
         $gallery = new Gallery();
@@ -54,9 +77,7 @@ class GalleryController extends Controller
             try {
                 $id = $this->galleryService->save($gallery);
                 \Yii::$app->session->setFlash('success', 'Gallery was successfully created');
-                return $this->redirect('view', [
-                    'id' => $id
-                ]);
+                return $this->redirect(['view', 'id' => $id ]);
             } catch (DomainException $exception) {
                 \Yii::$app->session->setFlash('error', $exception->getMessage());
             }
@@ -66,13 +87,34 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
-        return $this->render('index.twig');
+        $gallery = $this->galleryService->getOne($id);
+
+        if($gallery->load(\Yii::$app->request->post())) {
+            try {
+                $id = $this->galleryService->save($gallery);
+                \Yii::$app->session->setFlash('success', 'Gallery was successfully created');
+                return $this->redirect(['view', 'id' => $id ]);
+            } catch (DomainException $exception) {
+                \Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+        }
+        return $this->render('create.twig', [
+            'model' => $gallery
+        ]);
     }
 
-    public function actionDelete()
+    public function actionDelete($id)
     {
-        return $this->render('index.twig');
+        try {
+            $this->galleryService->delete($id);
+            \Yii::$app->session->setFlash('success', 'Gallery was successfully deleted');
+        } catch (DomainException $exception)
+        {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['index.twig']);
     }
 }

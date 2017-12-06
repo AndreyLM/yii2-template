@@ -1,0 +1,11 @@
+{{ set(this, 'title', 'Update Category: ' ~ model.title) }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label' : 'galleries', 'url' : path('gallery/index')},
+	{ 'label' : model.title, 'url' : path('gallery/view', {'id' : model.id})},
+	{ 'label' : 'update' }
+	]}) }}
+
+<div class="category-update">
+	{{ this.render('_form.twig', { 'model' : model }) | raw
+	}}
+</div>
