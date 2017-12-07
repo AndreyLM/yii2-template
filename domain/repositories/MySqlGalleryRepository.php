@@ -10,10 +10,11 @@ namespace domain\repositories;
 
 
 use domain\entities\gallery\Gallery;
+use domain\entities\gallery\Photo;
 use domain\forms\UploadForm;
 use domain\mysql\Gallery as ARGallery;
+use domain\mysql\Photo as ARPhoto;
 use domain\exceptions\DomainException;
-use domain\mysql\Photo;
 use yii\web\NotFoundHttpException;
 
 class MySqlGalleryRepository implements IGalleryRepository
@@ -106,13 +107,100 @@ class MySqlGalleryRepository implements IGalleryRepository
     public function addPhotos($galleryId, UploadForm $photosForm)
     {
         foreach ($photosForm->files as $file) {
-            $photo = new Photo();
+            $photo = new ARPhoto();
             $photo->gallery_id = $galleryId;
             $photo->file = $file;
+            $photo->sort = 1;
             if(!$photo->save())
                 throw new DomainException('Cannot upload some file');
         }
 
         return true;
+    }
+
+    /* @param int $galleryId
+     * @param string $origin
+     * @param string $thumb
+     * @return Photo[]
+     * */
+    public function getPhotos($galleryId, $origin, $thumb)
+    {
+        $photos = [];
+        $arPhotos = ARPhoto::findAll(['gallery_id' => $galleryId]);
+        foreach ($arPhotos as $arPhoto)
+        {
+            $photo = new Photo();
+
+            $photo->id = $arPhoto->id;
+            $photo->gallery_id = $galleryId;
+            $photo->sort = $arPhoto->sort;
+            $photo->origin = $arPhoto->getImageFileUrl('file');
+            $photo->thumb = $arPhoto->getThumbFileUrl('file', $thumb);
+
+            $photos[] = $photo;
+        }
+
+        return $photos;
+    }
+
+    /* @param int $id
+     * @throws DomainException
+     * @throws NotFoundHttpException
+     * @return bool
+     */
+    public function deletePhoto($id)
+    {
+        if(!$photo = ARPhoto::findOne(['id' => $id]))
+            throw new NotFoundHttpException('Cannot find photo');
+
+        if(!$photo->delete())
+            throw new DomainException('Sorry, but something has gone wrong');
+
+        return true;
+    }
+
+
+    /* @param int $galleryId
+     * @param int $photoId
+     * @throws NotFoundHttpException
+     * @throws DomainException
+     * @return bool
+     */
+    public function movePhotoToStart($galleryId, $photoId)
+    {
+        throw new DomainException('This feature is not implemented yet');
+    }
+
+    /* @param int $galleryId
+     * @param int $photoId
+     * @throws NotFoundHttpException
+     * @throws DomainException
+     * @return bool
+     */
+    public function movePhotoToEnd($galleryId, $photoId)
+    {
+        throw new DomainException('This feature is not implemented yet');
+    }
+
+    /* @param int $galleryId
+     * @param int $photoId
+     * @throws NotFoundHttpException
+     * @throws DomainException
+     * @return bool
+     */
+    public function movePhotoNext($galleryId, $photoId)
+    {
+        throw new DomainException('This feature is not implemented yet');
+    }
+
+    /* @param int $galleryId
+     * @param int $photoId
+     * @throws NotFoundHttpException
+     * @throws DomainException
+     * @return bool
+     */
+    public function movePhotoPrev($galleryId, $photoId)
+    {
+        throw new DomainException('This feature is not implemented yet');
     }
 }

@@ -17,6 +17,11 @@ use yiidreamteam\upload\ImageUploadBehavior;
  */
 class Photo extends ActiveRecord
 {
+    const PHOTO_ORIGIN = 'origin';
+    const PHOTO_THUMB_SMALL = 'thumb_small';
+    const PHOTO_THUMB_MEDIUM = 'thumb_medium';
+    const PHOTO_THUMB_BIG = 'thumb_big';
+
     /**
      * @inheritdoc
      */
@@ -37,12 +42,10 @@ class Photo extends ActiveRecord
                 'thumbPath' => '@staticRoot/cache/galleries/[[attribute_gallery_id]]/[[profile]]_[[id]].[[extension]]',
                 'thumbUrl' => '@static/cache/galleries/[[attribute_gallery_id]]/[[profile]]_[[id]].[[extension]]',
                 'thumbs' => [
-                    'admin' => ['width' => 100, 'height' => 70],
-                    'thumb' => ['width' => 640, 'height' => 480],
-                    'cart_list' => ['width' => 150, 'height' => 150],
-                    'cart_widget_list' => ['width' => 57, 'height' => 57],
-                    'catalog_list' => ['width' => 228, 'height' => 228],
-
+                    self::PHOTO_ORIGIN => ['width' => 800, 'height' => 600],
+                    self::PHOTO_THUMB_SMALL => ['width' => 57, 'height' => 57],
+                    self::PHOTO_THUMB_MEDIUM => ['width' => 150, 'height' => 150],
+                    self::PHOTO_THUMB_BIG => ['width' => 640, 'height' => 480],
                 ],
             ],
         ];

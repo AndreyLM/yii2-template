@@ -1,7 +1,10 @@
 {{ use('yii/widgets/DetailView') }}
+{{ use('kartik/file/FileInput') }}
+{{ use('yii/widgets/ActiveForm') }}
+
 {{ set(this, 'title', model.title) }}
 {{ set(this, 'params', { 'breadcrumbs' : [
-	{'label' : 'Galleries', 'url' : path['index'] },
+	{'label' : 'Galleries', 'url' : path(['index']) },
 	{'label' : model.title }
 	] }) }}
 
@@ -16,7 +19,7 @@
 		}) | raw }}
 	</p>
 	
-	<div class="category-view">
+	<div class="gallery-view">
 		
 		<div class="box box-default">
 			<div class="box-header">
@@ -36,4 +39,57 @@
 		</div>
 	
 	</div>
+	
+	<div class="gallery-view-images">
+		{% for image in photos %}
+			<div class="gallery-view-image">
+				<p><img src="{{ image.thumb }}" alt=""></p>
+				<p>
+					<a href="{{ path('move-photo-to-start', {'galleryId': model.id, 'photoId' : image.id }) }}">
+						<i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i>
+					</a>
+					<a href="{{ path('move-photo-prev', {'galleryId': model.id, 'photoId' : image.id }) }}">
+						<i class="fa fa-angle-left fa-lg" aria-hidden="true"></i>
+					</a>
+					<a href="{{ path('delete-photo', {'galleryId': model.id, 'photoId' : image.id }) }}">
+						<i class="fa fa-times fa-lg" aria-hidden="true"></i>
+					</a>
+					<a href="{{ path('move-photo-next', {'galleryId': model.id, 'photoId' : image.id }) }}">
+						<i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+					</a>
+					<a href="{{ path('move-photo-to-end', {'galleryId': model.id, 'photoId' : image.id }) }}">
+						<i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i>
+					</a>
+				</p>
+			</div>
+		{% endfor %}
+	</div>
+	
+	
+	<div class="photo-upload-form">
+		
+		{% set form=active_form_begin({
+			'options' : {
+				'enctype' : 'multipart/form-data'
+			}
+		}) %}
+		
+		{{ form.field(uploadForm, 'files[]').label(false).widget('kartik\\file\\FileInput', {
+			'options' : {
+				'accept' : 'image/*',
+				'multiple' : true,
+			}
+		}) | raw }}
+		
+		<div class="form-group">
+			{{ html.submitButton('Upload', {
+				'class' : 'btn btn-primary',
+			}) | raw }}
+		</div>
+		
+		{{ active_form_end() }}
+	
+	</div>
 </div>
+
+

@@ -20,7 +20,11 @@ return [
         'gii' => [
             'class' => yii\gii\Module::className(),
             'allowedIPs' => ['*']
-        ]
+        ],
+        'debug' => [
+            'class' => yii\debug\Module::className(),
+            'allowedIPs' => ['*']
+        ],
     ],
     'components' => [
         'request' => [

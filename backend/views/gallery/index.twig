@@ -11,7 +11,22 @@
 	</p>
 	
 	{% for gallery in model %}
-		<p>{{ gallery.title }}</p>
+		<p>
+			{{ html.a('<span class="glyphicon glyphicon-eye-open"></span>',
+			path('gallery/view', { 'id' : gallery.id })) | raw }}
+			{{ html.a('<span class="glyphicon glyphicon-pencil"></span>',
+			path('gallery/update', {'id' : gallery.id })) | raw }}
+			{{ html.a('<span class="glyphicon glyphicon-trash"></span>',
+			path('gallery/delete', { 'id' : gallery.id }), {
+				'data' : {
+					'confirm' : 'Are you sure you want to delete this item?',
+					'method' : 'post',
+				},
+			}) | raw }}
+			
+			{{ gallery.title }}
+		
+		</p>
 	{% endfor %}
 	
 </div>

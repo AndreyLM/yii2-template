@@ -10,6 +10,7 @@ namespace backend\controllers;
 
 
 use domain\entities\gallery\Gallery;
+use domain\entities\gallery\Photo;
 use domain\exceptions\DomainException;
 use domain\forms\UploadForm;
 use domain\services\GalleryService;
@@ -50,6 +51,8 @@ class GalleryController extends Controller
     public function actionView($id)
     {
         $gallery = $this->galleryService->getOne($id);
+        $photos = $this->galleryService->getPhotos($gallery->id,
+            Photo::PHOTO_ORIGIN, Photo::PHOTO_THUMB_MEDIUM);
 
         $photoUploadForm = new UploadForm();
 
@@ -57,7 +60,7 @@ class GalleryController extends Controller
             try {
                 $this->galleryService->addPhotos($gallery->id, $photoUploadForm);
                 \Yii::$app->session->setFlash('success', 'Photos were successfully uploaded');
-                return $this->render('view.twig', ['id' => $gallery->id ]);
+
             } catch (DomainException $exception) {
                 \Yii::$app->session->setFlash('error', $exception->getMessage());
             }
@@ -65,44 +68,20 @@ class GalleryController extends Controller
 
         return $this->render('view.twig', [
            'model' => $gallery,
-           'photos' => $photoUploadForm,
+           'uploadForm' => $photoUploadForm,
+            'photos' => $photos
         ]);
     }
 
     public function actionCreate()
     {
-        $gallery = new Gallery();
-
-        if($gallery->load(\Yii::$app->request->post())) {
-            try {
-                $id = $this->galleryService->save($gallery);
-                \Yii::$app->session->setFlash('success', 'Gallery was successfully created');
-                return $this->redirect(['view', 'id' => $id ]);
-            } catch (DomainException $exception) {
-                \Yii::$app->session->setFlash('error', $exception->getMessage());
-            }
-        }
-        return $this->render('create.twig', [
-            'model' => $gallery
-        ]);
+        return $this->save(new Gallery(), 'create');
     }
 
     public function actionUpdate($id)
     {
-        $gallery = $this->galleryService->getOne($id);
 
-        if($gallery->load(\Yii::$app->request->post())) {
-            try {
-                $id = $this->galleryService->save($gallery);
-                \Yii::$app->session->setFlash('success', 'Gallery was successfully created');
-                return $this->redirect(['view', 'id' => $id ]);
-            } catch (DomainException $exception) {
-                \Yii::$app->session->setFlash('error', $exception->getMessage());
-            }
-        }
-        return $this->render('create.twig', [
-            'model' => $gallery
-        ]);
+        return $this->save($this->galleryService->getOne($id), 'update');
     }
 
     public function actionDelete($id)
@@ -115,6 +94,82 @@ class GalleryController extends Controller
             \Yii::$app->session->setFlash('error', $exception->getMessage());
         }
 
-        return $this->redirect(['index.twig']);
+        return $this->redirect(['index']);
+    }
+
+    public function actionDeletePhoto($galleryId, $photoId)
+    {
+        try {
+            $this->galleryService->deletePhoto($photoId);
+            \Yii::$app->session->setFlash('success', 'Photo was successfully deleted');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $galleryId]);
+    }
+
+    public function actionMovePhotoToStart($galleryId, $photoId)
+    {
+        try {
+            $this->galleryService->movePhotoToStart($galleryId, $photoId);
+            \Yii::$app->session->setFlash('success', 'Photo was successfully moved to start');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $galleryId]);
+    }
+
+    public function actionMovePhotoToEnd($galleryId, $photoId)
+    {
+        try {
+            $this->galleryService->movePhotoToEnd($galleryId, $photoId);
+            \Yii::$app->session->setFlash('success', 'Photo was successfully moved to end');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $galleryId]);
+    }
+
+    public function actionMovePhotoNext($galleryId, $photoId)
+    {
+        try {
+            $this->galleryService->movePhotoNext($galleryId, $photoId);
+            \Yii::$app->session->setFlash('success', 'Photo was successfully move photo to next');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $galleryId]);
+    }
+
+    public function actionMovePhotoPrev($galleryId, $photoId)
+    {
+        try {
+            $this->galleryService->movePhotoPrev($galleryId, $photoId);
+            \Yii::$app->session->setFlash('success', 'Photo was successfully move photo to prev');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $galleryId]);
+    }
+
+    private function save(Gallery $gallery, $view)
+    {
+        if($gallery->load(\Yii::$app->request->post())) {
+            try {
+                $id = $this->galleryService->save($gallery);
+                \Yii::$app->session->setFlash('success', 'Gallery was successfully '.$view.'d');
+                return $this->redirect(['view', 'id' => $id ]);
+            } catch (DomainException $exception) {
+                \Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+        }
+        return $this->render($view.'.twig', [
+            'model' => $gallery
+        ]);
     }
 }
