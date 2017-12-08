@@ -12,6 +12,7 @@ namespace domain\services;
 use domain\entities\Article;
 use domain\formaters\ArrayListCategoryFormatter;
 use domain\formaters\IArticleFormatter;
+use domain\repositories\IArticleRepository;
 use domain\repositories\MySqlArticleRepository;
 use DomainException;
 use yii\web\NotFoundHttpException;
@@ -20,9 +21,9 @@ class ArticleService implements IArticleService
 {
     private $articleRepository;
 
-    public function __construct()
+    public function __construct(IArticleRepository $articleRepository)
     {
-        $this->articleRepository = new MySqlArticleRepository();
+        $this->articleRepository = $articleRepository;
     }
 
     /* @param $article Article

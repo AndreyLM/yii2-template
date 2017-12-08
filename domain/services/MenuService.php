@@ -21,9 +21,9 @@ class MenuService implements IMenuService
 {
     /* @var IMenuRepository */
     private $menuRepository;
-    public function __construct()
+    public function __construct(IMenuRepository $menuRepository)
     {
-        $this->menuRepository = new MySqlMenuRepository();
+        $this->menuRepository = $menuRepository;
     }
 
     /* @return Menu[] */

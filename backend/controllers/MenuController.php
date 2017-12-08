@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use domain\exceptions\DomainException;
+use domain\services\IMenuService;
 use domain\services\MenuService;
 use Yii;
 use domain\entities\menu\Menu;
@@ -18,9 +19,9 @@ class MenuController extends Controller
 {
     private $menuService;
 
-    public function __construct($id, Module $module, array $config = [])
+    public function __construct($id, Module $module, IMenuService $menuService, array $config = [])
     {
-        $this->menuService = new MenuService();
+        $this->menuService = $menuService;
 
         parent::__construct($id, $module, $config);
     }

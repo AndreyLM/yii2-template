@@ -14,6 +14,7 @@ use domain\entities\gallery\Photo;
 use domain\exceptions\DomainException;
 use domain\forms\UploadForm;
 use domain\services\GalleryService;
+use domain\services\IGalleryService;
 use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -22,9 +23,9 @@ class GalleryController extends Controller
 {
     private $galleryService;
 
-    public function __construct($id, Module $module, array $config = [])
+    public function __construct($id, Module $module, IGalleryService $galleryService, array $config = [])
     {
-        $this->galleryService = new GalleryService();
+        $this->galleryService = $galleryService;
 
         parent::__construct($id, $module, $config);
     }

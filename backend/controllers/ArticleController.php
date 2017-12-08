@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use domain\entities\Meta;
-use domain\services\ArticleService;
 use domain\services\CategoryService;
+use domain\services\IArticleService;
 use DomainException;
 use Yii;
 use domain\entities\Article;
@@ -21,9 +21,9 @@ class ArticleController extends Controller
 
     private $articleService;
 
-    public function __construct($id, Module $module, array $config = [])
+    public function __construct($id, Module $module, IArticleService $articleService, array $config = [])
     {
-        $this->articleService = new ArticleService();
+        $this->articleService = $articleService;
         parent::__construct($id, $module, $config);
     }
     /**

@@ -16,7 +16,7 @@ use frontend\models\ContactForm;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends SuperController
 {
     /**
      * @inheritdoc
@@ -72,6 +72,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->menuService->getMenu();
         return $this->render('index');
     }
 

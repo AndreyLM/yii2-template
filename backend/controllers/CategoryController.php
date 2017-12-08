@@ -6,6 +6,7 @@ use domain\entities\Meta;
 use domain\exceptions\DomainException;
 use domain\formaters\ArrayListCategoryFormatter;
 use domain\services\CategoryService;
+use domain\services\ICategoryService;
 use Yii;
 use domain\entities\Category;
 use domain\mysql\searches\CategorySearch;
@@ -21,9 +22,9 @@ class CategoryController extends Controller
 
     private $categoryService;
 
-    public function __construct($id, Module $module, array $config = [])
+    public function __construct($id, Module $module, ICategoryService $categoryService, array $config = [])
     {
-        $this->categoryService = new CategoryService();
+        $this->categoryService = $categoryService;
         $this->layout = 'main.twig';
 
         parent::__construct($id, $module, $config);

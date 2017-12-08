@@ -17,6 +17,8 @@ use yii\web\NotFoundHttpException;
 
 interface IMenuService
 {
+    const MENU_HEADER = 1;
+
     /* @return Menu[] */
     public function getMenuList();
 

@@ -14,7 +14,7 @@ return [
         '@static'   => $params['staticHostInfo'],
     ],
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'common\bootstrap\SetUp'],
     'layout' => 'main.twig',
     'modules' => [
         'gii' => [

@@ -12,6 +12,7 @@ namespace domain\services;
 use domain\entities\Category;
 use domain\exceptions\DomainException;
 use domain\formaters\ICategoryFormatter;
+use domain\repositories\ICategoryRepository;
 use domain\repositories\MySqlCategoryRepository;
 use yii\web\NotFoundHttpException;
 
@@ -19,9 +20,9 @@ class CategoryService implements ICategoryService
 {
     private $categoryRepository;
 
-    public function __construct()
+    public function __construct(ICategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = new MySqlCategoryRepository();
+        $this->categoryRepository = $categoryRepository;
     }
 
     /* @param $category Category

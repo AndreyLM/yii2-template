@@ -13,6 +13,7 @@ use domain\entities\gallery\Gallery;
 use domain\entities\gallery\Photo;
 use domain\exceptions\DomainException;
 use domain\forms\UploadForm;
+use domain\repositories\IGalleryRepository;
 use domain\repositories\MySqlGalleryRepository;
 use http\Exception\RuntimeException;
 use yii\web\NotFoundHttpException;
@@ -21,9 +22,9 @@ class GalleryService implements IGalleryService
 {
     private $galleryRepository;
 
-    public function __construct()
+    public function __construct(IGalleryRepository $galleryRepository)
     {
-        $this->galleryRepository = new MySqlGalleryRepository();
+        $this->galleryRepository = $galleryRepository;
     }
 
     /* @return Gallery[] */
