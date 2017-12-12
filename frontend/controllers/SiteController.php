@@ -72,7 +72,7 @@ class SiteController extends SuperController
      */
     public function actionIndex()
     {
-        $this->menuService->getMenu();
+//        $this->menuService->getMenu();
         return $this->render('index');
     }
 

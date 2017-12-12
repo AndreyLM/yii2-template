@@ -70,6 +70,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'main-login.twig';
 
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -80,7 +81,7 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
-        return $this->render('main-login.twig', [
+        return $this->render('login', [
             'model' => $model,
         ]);
     }
