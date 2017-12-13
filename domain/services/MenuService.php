@@ -108,6 +108,8 @@ class MenuService implements IMenuService
      * */
     public function format(IMenuFormatter $formatter, $menuId)
     {
-        return $formatter->format($this->getMenu($menuId), $this->getMenuItems($menuId));
+        return $formatter->format(
+            $this->getMenu($menuId),
+            $this->getMenuItems($menuId));
     }
 }

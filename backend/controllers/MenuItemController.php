@@ -5,6 +5,7 @@ namespace backend\controllers;
 use domain\entities\menu\Item;
 use domain\exceptions\DomainException;
 use domain\formaters\ArrayListMenuItemsFormatter;
+use domain\services\IMenuService;
 use domain\services\MenuService;
 use Yii;
 use yii\base\Module;
@@ -14,31 +15,17 @@ use yii\filters\VerbFilter;
 /**
  * MenuController implements the CRUD actions for Menu model.
  */
-class MenuItemController extends Controller
+class MenuItemController extends BaseController
 {
     private $menuService;
 
-    public function __construct($id, Module $module, array $config = [])
+    public function __construct($id, Module $module, IMenuService $menuService, array $config = [])
     {
-        $this->menuService = new MenuService();
+        $this->menuService = $menuService;
 
         parent::__construct($id, $module, $config);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Menu models.
@@ -47,9 +34,11 @@ class MenuItemController extends Controller
      */
     public function actionIndex($menuId)
     {
+
         $menu = $this->menuService->getFullMenuItems($menuId);
         return $this->render('index.twig',[
-           'model' => $menu
+           'model' => $menu,
+
         ]);
     }
 
@@ -62,6 +51,13 @@ class MenuItemController extends Controller
     {
         return $this->render('view.twig', [
             'model' => $this->menuService->getItem($id),
+            'isActive' => function(Item $item) {
+                return $this->isActive($item);
+            },
+            'types' => function(Item $item) {
+                $types = $item->getItemTypes();
+                return $types[$item->type];
+            }
         ]);
     }
 
@@ -129,5 +125,11 @@ class MenuItemController extends Controller
             'model' => $model,
             'list' => $this->menuService->format(new ArrayListMenuItemsFormatter(), $menuId)
         ]);
+    }
+
+    private function isActive(Item $item)
+    {
+        return $item->status ? '<i class="fa fa-check-circle-o fa-1g"></i>' :
+            '<i class="fa fa-circle-o fa-1g"></i>';
     }
 }

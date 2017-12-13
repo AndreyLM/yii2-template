@@ -60,25 +60,5 @@ return [
         ],
         */
     ],
-    'as beforeRequest' => [
-        'class' => 'yii\filters\AccessControl',
-        'rules' => [
-            [
-                'allow' => true,
-                'actions' => ['login'],
-            ],
-            [
-                'allow' => true,
-                'roles' => ['manager'],
-            ],
-        ],
-        'denyCallback' => function () {
-            if (Yii::$app->user->isGuest) {
-                return Yii::$app->response->redirect(['site/login']);
-            }
-
-            throw new \yii\web\ForbiddenHttpException('You are not allowed to this page');
-        },
-    ],
     'params' => $params,
 ];

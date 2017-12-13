@@ -19,7 +19,7 @@ use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class GalleryController extends Controller
+class GalleryController extends BaseController
 {
     private $galleryService;
 
@@ -28,18 +28,6 @@ class GalleryController extends Controller
         $this->galleryService = $galleryService;
 
         parent::__construct($id, $module, $config);
-    }
-
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
     }
 
     public function actionIndex()

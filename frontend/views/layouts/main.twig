@@ -29,16 +29,7 @@
 		},
 	}) }}
 	
-	{% set menuItems = [
-		{'label' : 'Home', 'url' : path(['/site/index'])},
-		{'label' : 'About', 'url' : path(['/site/about'])},
-		{'label' : 'Contact', 'url' : path(['/site/contact'])},
-		{'label' : 'SubItems', 'url' : path(['/#']), 'items' : [
-			{'label' : 'Home', 'url' : path(['/site/index'])},
-			{'label' : 'Home', 'url' : path(['/site/index'])},
-			{'label' : 'Home', 'url' : path(['/site/index'])}
-		]},
-	] %}
+	{% set menuItems = this.context.headerMenu.items %}
 	
 	{% if app.user.isGuest == false %}
 		{% set menuItems = menuItems|merge([
@@ -52,7 +43,7 @@
 	{% else %}
 		{% set menuItems = menuItems|merge([
 			{'label' : 'login', 'url' : path(['/site/login'])},
-			{'label' : 'login', 'url' : path(['/site/sign-up'])},
+			{'label' : 'sign-up', 'url' : path(['/site/sign-up'])},
 		])
 		%}
 	{% endif %}

@@ -10,13 +10,11 @@ use Yii;
 use domain\entities\Article;
 use domain\mysql\searches\ArticleSearch;
 use yii\base\Module;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
  */
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
 
     private $articleService;
@@ -25,20 +23,6 @@ class ArticleController extends Controller
     {
         $this->articleService = $articleService;
         parent::__construct($id, $module, $config);
-    }
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
     }
 
     /**

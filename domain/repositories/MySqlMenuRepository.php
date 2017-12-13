@@ -19,6 +19,7 @@ use yii\web\NotFoundHttpException;
 class MySqlMenuRepository implements IMenuRepository
 {
 
+
     /* @return Menu[] */
     public function getMenuList()
     {
@@ -42,11 +43,15 @@ class MySqlMenuRepository implements IMenuRepository
 
     /* @param $menuId int
      * @throws NotFoundHttpException
+     * @throws DomainException
      * @return Item[]
      * */
     public function getMenuItems($menuId)
     {
         $menu = $this->find($menuId);
+        if($menu->depth === 0) {
+            throw new DomainException('Invalid menu. Root menu can contain only another menus not items');
+        }
 
         $arItems = ARMenu::find()->where(['>', 'lft', $menu->lft])
             ->andWhere(['<', 'rgt', $menu->rgt])->orderBy('lft')->all();
@@ -55,7 +60,9 @@ class MySqlMenuRepository implements IMenuRepository
 
         foreach ($arItems as $arItem)
         {
-            $items[] = $this->mapItemToEntity($arItem);
+            $item = $this->mapItemToEntity($arItem);
+            $item->menu = $this->mapMenuToEntity($this->getMenuByItem($arItem));
+            $items[] = $item;
         }
 
         return $items;
@@ -67,7 +74,11 @@ class MySqlMenuRepository implements IMenuRepository
      */
     public function getItem($id)
     {
-        return $this->mapItemToEntity($this->find($id));
+        $arItem = $this->find($id);
+        $item = $this->mapItemToEntity($arItem);
+        $item->menu = $this->mapMenuToEntity($this->getMenuByItem($arItem));
+
+        return $item;
     }
 
     /* @param $id int
@@ -211,8 +222,13 @@ class MySqlMenuRepository implements IMenuRepository
 
     private function getMenuByItem(ARMenu $item)
     {
+        if ($item->depth === 1) {
+            throw new DomainException('It\' already menu! Menu doesn\'t have parent menu');
+        }
+
         $menu = ARMenu::find()->where(['<', 'lft', $item->lft])
             ->andWhere(['>', 'rgt', $item->rgt])->andWhere(['depth' => 1])->one();
+
 
         return $menu;
     }

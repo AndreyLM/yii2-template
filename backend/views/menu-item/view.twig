@@ -13,7 +13,7 @@
 	<p>
 		{{  html.a('Update', path('update', { 'menuId' : model.parentId, 'id' : model.id }),
 		{ 'class' : 'btn btn-primary'}) | raw }}
-		{{  html.a('Delete', path('delete', { 'menuId' : model.menu.id', id' : model.id }), {
+		{{  html.a('Delete', path('delete', { 'menuId' : model.menu.id, 'id' : model.id }), {
 			'class' : 'btn btn-danger',
 			'data' : {
 				'confirm' : 'Are you sure you want to delete this item?',
@@ -33,8 +33,17 @@
 			'attribute' : 'parentId',
 			'value' : model.parentId
 		},
-		'status',
-		'img'
+		{
+			'attribute' : 'status',
+			'value' : isActive,
+			'format' : 'raw'
+		},
+		{
+			'attribute' : 'type',
+			'value' : types
+		},
+		'img',
+		'relation'
 		],
 	}) }}
 	

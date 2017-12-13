@@ -31,6 +31,14 @@ class NavMenuFormatter implements IMenuFormatter
             $this->items[$item->id] = $item;
             $this->parentKeys[$item->parentId] = $item->parentId;
         }
+
+        foreach ($items as $item) {
+            if($item->parentId === $menu->id) {
+                $this->result['items'][] = $this->makeTree($item);
+            }
+        }
+
+        return $this->result;
     }
 
     public function makeTree(Item $item)
@@ -46,7 +54,7 @@ class NavMenuFormatter implements IMenuFormatter
         /* @var $child Item*/
         foreach ($this->items as $child) {
             if ($child->parentId === $item->id) {
-                $res['items'] = $this->makeTree($child);
+                $res['items'][] = $this->makeTree($child);
             }
         }
 
