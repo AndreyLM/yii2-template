@@ -67,16 +67,16 @@ class MySqlArticleRepository implements IArticleRepository
      */
     public function getAll(): array
     {
-        $categories = [];
-        $arArticles = ARArticle::find()->orderBy('lft')->all();
+        $articles = [];
+        $arArticles = ARArticle::find()->all();
 
         foreach ($arArticles as $arCategory) {
-            $category = new Article();
-            $this->mapToEntity($arCategory, $category);
-            $categories[] = $category;
+            $article = new Article();
+            $this->mapToEntity($arCategory, $article);
+            $articles[] = $article;
         }
 
-        return $categories;
+        return $articles;
     }
 
     private function find($id)
@@ -136,5 +136,22 @@ class MySqlArticleRepository implements IArticleRepository
         $arArticle->created_at = $article->createdAt;
         $arArticle->updated_at = $article->updatedAt;
         $arArticle->publishing_at = $article->publishingAt;
+    }
+
+    /* @param $categoryId int
+     * @return array | null
+     */
+    public function getByCategoryId($categoryId)
+    {
+        $articles = [];
+        $arArticles = ARArticle::find()->where(['category_id' => $categoryId])->all();
+
+        foreach ($arArticles as $arCategory) {
+            $article = new Article();
+            $this->mapToEntity($arCategory, $article);
+            $articles[] = $article;
+        }
+
+        return $articles;
     }
 }

@@ -48,7 +48,7 @@ class ArticleController extends BaseController
     public function actionView($id)
     {
         $categoryList =  $this->articleService
-        ->getCategoryList(new CategoryService());
+        ->getCategoryList(Yii::$container->get('domain\services\ICategoryService'));
 
         return $this->render('view.twig', [
             'model' => $this->articleService->getOne($id),
@@ -112,7 +112,10 @@ class ArticleController extends BaseController
             ]);
         }
 
-        $categoryList = $this->articleService->getCategoryList(new CategoryService());
+        Yii::$container->get('domain\services\ICategoryService');
+
+        $categoryList = $this->articleService
+            ->getCategoryList(Yii::$container->get('domain\services\ICategoryService'));
         return $this->render($view.'.twig', [
             'model' => $model,
             'meta' => $meta,
@@ -135,5 +138,22 @@ class ArticleController extends BaseController
         }
 
         return false;
+    }
+
+    /* actions for ajax call*/
+    function actionAjaxArticles($categoryId)
+    {
+        $output = [];
+        $articles = $this->articleService->getByCategoryId($categoryId);
+
+        /* @var $article \domain\entities\Article */
+        foreach ($articles as $article) {
+            $shortArticle = new \stdClass();
+            $shortArticle->id = $article->id;
+            $shortArticle->title = $article->title;
+            $output[] = $shortArticle;
+        }
+
+        return json_encode($output);
     }
 }

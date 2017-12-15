@@ -37,4 +37,8 @@ interface IArticleRepository
      * @return \domain\entities\Category[]
      */
     public function getAll():array;
+
+    /* @param $categoryId int
+     * @return array | null*/
+    public function getByCategoryId($categoryId);
 }

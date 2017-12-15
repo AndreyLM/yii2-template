@@ -39,4 +39,7 @@ interface IArticleService
      * */
     public function getCategoryList(ICategoryService $categoryService);
 
+    /* @param $categoryId int
+     * @return array | null*/
+    public function getByCategoryId($categoryId);
 }

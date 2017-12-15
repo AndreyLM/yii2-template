@@ -72,7 +72,11 @@ class SiteController extends SuperController
      */
     public function actionIndex()
     {
-         return $this->render('index');
+        $menu = $this->menuService->getFullMenuItems(13);
+
+        return $this->render('index.twig', [
+            'menu' => $menu
+        ]);
     }
 
     /**

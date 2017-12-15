@@ -46,4 +46,6 @@ class Menu extends Model
             'status' => 'Status',
         ];
     }
+
+
 }

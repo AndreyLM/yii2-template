@@ -1,0 +1,7 @@
+{{ set(this, 'title', 'Knowledge') }}
+
+<div class="site-index">
+{% for item in menu.items %}
+	<p>{{ item.title }}</p>
+{% endfor %}
+</div>

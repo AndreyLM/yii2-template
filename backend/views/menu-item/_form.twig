@@ -14,7 +14,7 @@
 	
 	{{ form.field(model, 'type').dropDownList(model.getItemTypes()) | raw }}
 	
-	{{ form.field(model, 'relation').textInput({ 'maxlength' : true }) | raw }}
+	{{ form.field(model, 'relation').dropDownList(['----']) | raw }}
 	
 	{{ form.field(model, 'status').checkbox() | raw }}
 	

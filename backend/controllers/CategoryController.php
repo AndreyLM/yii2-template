@@ -153,4 +153,9 @@ class CategoryController extends BaseController
                 '<i class="fa fa-circle-o fa-1g"></i>';
     }
 
+    public function actionAjaxCategories()
+    {
+        return json_encode($this->categoryService->getAll());
+    }
+
 }

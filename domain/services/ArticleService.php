@@ -88,4 +88,12 @@ class ArticleService implements IArticleService
         $categories = $categoryService->getAll();
         return $categoryService->format(new ArrayListCategoryFormatter(), $categories);
     }
+
+    /* @param $categoryId int
+     * @return array | null
+     */
+    public function getByCategoryId($categoryId)
+    {
+        return $this->articleRepository->getByCategoryId($categoryId);
+    }
 }
