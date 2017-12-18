@@ -80,4 +80,13 @@ class CategoryService implements ICategoryService
 
         return true;
     }
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return array Category[]
+     */
+    public function getOneWithChildren($id)
+    {
+        return $this->categoryRepository->getOneWithChildren($id);
+    }
 }

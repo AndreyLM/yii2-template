@@ -12,13 +12,18 @@ namespace domain\entities\menu;
 class Item extends Menu
 {
 
-    public $img;
+    public $img = [];
     public $relation;
     public $depth;
 
     /* @var Menu*/
     public $menu;
     public $parentId;
+
+    const ITEM_IMAGE_ORIGIN = 'origin';
+    const ITEM_IMAGE_THUMB_SMALL = 'thumb_small';
+    const ITEM_IMAGE_THUMB_MEDIUM = 'thumb_medium';
+    const ITEM_IMAGE_THUMB_BIG = 'thumb_big';
 
     const TYPE_ITEM_CONTAINER = '2';
     const TYPE_ITEM_TABLE_OF_CONTENT = '3';

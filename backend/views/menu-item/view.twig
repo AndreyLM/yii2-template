@@ -1,4 +1,6 @@
 {{ use('yii/widgets/DetailView') }}
+{{ use('kartik/file/FileInput') }}
+{{ use('yii/widgets/ActiveForm') }}
 
 {{ set(this, 'title', model.title) }}
 {{ set(this, 'params', { 'breadcrumbs' : [
@@ -42,9 +44,37 @@
 			'attribute' : 'type',
 			'value' : types
 		},
-		'img',
-		'relation'
+		'relation',
+		{
+			'attribute' : 'img',
+			'value' : thumb,
+			'format' : 'raw'
+		},
 		],
 	}) }}
 	
+	<div class="photo-upload-form">
+		
+		{% set form=active_form_begin({
+		'options' : {
+		'enctype' : 'multipart/form-data'
+		}
+		}) %}
+		
+		{{ form.field(uploadForm, 'files[]').label(false).widget('kartik\\file\\FileInput', {
+			'options' : {
+				'accept' : 'image/*',
+				'multiple' : false,
+			}
+		}) | raw }}
+		
+		<div class="form-group">
+			{{ html.submitButton('Upload', {
+				'class' : 'btn btn-primary',
+			}) | raw }}
+		</div>
+		
+		{{ active_form_end() }}
+	
+	</div>
 </div>

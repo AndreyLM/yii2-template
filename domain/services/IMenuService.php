@@ -12,6 +12,8 @@ use domain\entities\menu\Item;
 use domain\entities\menu\Menu;
 use domain\formaters\IMenuFormatter;
 use domain\exceptions\DomainException;
+use domain\formaters\IMenuRenderer;
+use domain\forms\UploadForm;
 use yii\web\NotFoundHttpException;
 
 
@@ -64,5 +66,14 @@ interface IMenuService
      * */
     public function format(IMenuFormatter $formatter, $menuId);
 
+    /* @param $id int
+     * @param $uploadForm UploadForm
+     * @throws \RuntimeException
+     * @return bool */
+    public function addItemImage($id, $uploadForm);
 
+    /* @param $menuRenderer IMenuRenderer
+    * @param $categoryId int
+     * @return mixed */
+    public function render(IMenuRenderer $menuRenderer, $categoryId);
 }

@@ -47,10 +47,7 @@ class MySqlCategoryRepository implements ICategoryRepository
     {
         $arCategory = $this->find($id);
 
-        $category = new Category();
-        $this->mapToEntity($arCategory, $category);
-
-        return $category;
+        return $this->mapToEntity($arCategory);
     }
 
 
@@ -61,9 +58,7 @@ class MySqlCategoryRepository implements ICategoryRepository
         $arCategories = ARCategory::find()->orderBy('lft')->all();
 
         foreach ($arCategories as $arCategory) {
-            $category = new Category();
-            $this->mapToEntity($arCategory, $category);
-            $categories[] = $category;
+            $categories[] = $this->mapToEntity($arCategory);
         }
 
         return $categories;
@@ -91,8 +86,10 @@ class MySqlCategoryRepository implements ICategoryRepository
     }
 
 
-    private function mapToEntity(ARCategory $arCategory, Category $category)
+    private function mapToEntity(ARCategory $arCategory)
     {
+        $category = new Category();
+
         $category->id = $arCategory->id;
         $category->title = $arCategory->title;
         $category->setMeta($arCategory->meta);
@@ -100,6 +97,8 @@ class MySqlCategoryRepository implements ICategoryRepository
         $category->name = $arCategory->name;
         $category->status = $arCategory->status;
         $category->lvl = $arCategory->depth;
+
+        return $category;
     }
 
     private function mapToActiveRecord(Category $category, ARCategory $arCategory)
@@ -109,5 +108,24 @@ class MySqlCategoryRepository implements ICategoryRepository
         $arCategory->description = $category->description;
         $arCategory->name = $category->name;
         $arCategory->status = $category->status;
+    }
+
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return array Category[]
+     */
+    public function getOneWithChildren($id)
+    {
+        
+        $categories = [];
+        $arCategory = $this->find($id);
+        $arCategories = ARCategory::find()->where(['>=', 'lft', $arCategory->lft])
+            ->andWhere(['<=', 'rgt', $arCategory->rgt])->all();
+        foreach ($arCategories as $category)
+        {
+            $categories[] = $this->mapToEntity($category);
+        }
+
+        return $categories;
     }
 }

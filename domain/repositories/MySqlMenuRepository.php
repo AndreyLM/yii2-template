@@ -11,6 +11,7 @@ namespace domain\repositories;
 
 use domain\entities\menu\Item;
 use domain\entities\menu\Menu;
+use domain\forms\UploadForm;
 use domain\mysql\Menu as ARMenu;
 use domain\exceptions\DomainException;
 use yii\db\ActiveRecord;
@@ -49,6 +50,8 @@ class MySqlMenuRepository implements IMenuRepository
     public function getMenuItems($menuId)
     {
         $menu = $this->find($menuId);
+
+
         if($menu->depth === 0) {
             throw new DomainException('Invalid menu. Root menu can contain only another menus not items');
         }
@@ -167,7 +170,7 @@ class MySqlMenuRepository implements IMenuRepository
         $item->description= $arItem->description;
         $item->status= $arItem->status;
         $item->type= $arItem->type;
-        $item->img = $arItem->img;
+        $this->mapItemImage($item, $arItem);
         $item->relation = $arItem->relation;
         $item->depth = $arItem->depth;
         $item->parentId = $arItem->parent->id;
@@ -198,7 +201,6 @@ class MySqlMenuRepository implements IMenuRepository
         $arItem->description = $item->description;
         $arItem->status = $item->status;
         $arItem->type = $item->type;
-        $arItem->img = $item->img;
         $arItem->relation = $item->relation;
 
         return $arItem;
@@ -231,5 +233,30 @@ class MySqlMenuRepository implements IMenuRepository
 
 
         return $menu;
+    }
+
+    private function mapItemImage(Item $item, ARMenu $arItem)
+    {
+        $item->img[Item::ITEM_IMAGE_ORIGIN] = $arItem->getThumbFileUrl('img', ARMenu::ITEM_IMAGE_ORIGIN);
+        $item->img[Item::ITEM_IMAGE_THUMB_MEDIUM] = $arItem->getThumbFileUrl('img', ARMenu::ITEM_IMAGE_THUMB_MEDIUM);
+
+    }
+
+    /* @param $id int
+     * @param $uploadForm UploadForm
+     * @throws \RuntimeException
+     * @throws DomainException
+     * @return bool
+     */
+    public function addItemImage($id, $uploadForm)
+    {
+        $item = $this->find($id);
+        if(!$uploadForm->files[0])
+            throw new DomainException('Please choose img before clicking upload');
+        $item->img = $uploadForm->files[0];
+        if(!$item->save())
+            throw new \RuntimeException('Problem with uploading item image');
+
+        return true;
     }
 }

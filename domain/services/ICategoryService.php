@@ -31,6 +31,12 @@ interface ICategoryService
      */
     public function getOne($id):Category;
 
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return array Category[]
+     */
+    public function getOneWithChildren($id);
+
     /* @param $categories \domain\entities\Category[]
      * @param $categoryFormatter
      * @return mixed

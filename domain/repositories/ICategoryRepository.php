@@ -33,6 +33,12 @@ interface ICategoryRepository
      */
     public function get(int $id):Category;
 
+    /* @param $id int
+     * @throws NotFoundHttpException
+     * @return array Category[]
+     */
+    public function getOneWithChildren($id);
+
     /* @throws NotFoundHttpException
      * @return \domain\entities\Category[]
      */

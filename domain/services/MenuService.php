@@ -13,6 +13,8 @@ use domain\entities\menu\Item;
 use domain\entities\menu\Menu;
 use domain\exceptions\DomainException;
 use domain\formaters\IMenuFormatter;
+use domain\formaters\IMenuRenderer;
+use domain\forms\UploadForm;
 use domain\repositories\IMenuRepository;
 use domain\repositories\MySqlMenuRepository;
 use yii\web\NotFoundHttpException;
@@ -50,7 +52,7 @@ class MenuService implements IMenuService
         $fullMenu = [];
 
         $fullMenu['menu'] = $this->getMenu($menuId);
-        $fullMenu['items'] = $this->menuRepository->getMenuItems($menuId);
+        $fullMenu['items'] = $this->getMenuItems($menuId);
 
         return $fullMenu;
     }
@@ -111,5 +113,27 @@ class MenuService implements IMenuService
         return $formatter->format(
             $this->getMenu($menuId),
             $this->getMenuItems($menuId));
+    }
+
+    /* @param $id int
+     * @param $uploadForm UploadForm
+     * @throws \RuntimeException
+     * @return bool
+     */
+    public function addItemImage($id, $uploadForm)
+    {
+        $this->menuRepository->addItemImage($id, $uploadForm);
+    }
+
+    /* @param $menuRenderer IMenuRenderer
+     * @return mixed
+     */
+    public function render(IMenuRenderer $menuRenderer, $categoryId)
+    {
+        return $menuRenderer->render(
+            \Yii::$container->get('domain\services\ICategoryService'),
+            \Yii::$container->get('domain\services\IArticleService'),
+            $categoryId
+        );
     }
 }

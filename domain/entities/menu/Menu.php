@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11/24/17
- * Time: 11:52 AM
- */
 
 namespace domain\entities\menu;
 

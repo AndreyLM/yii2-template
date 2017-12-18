@@ -5,6 +5,7 @@ namespace backend\controllers;
 use domain\entities\menu\Item;
 use domain\exceptions\DomainException;
 use domain\formaters\ArrayListMenuItemsFormatter;
+use domain\forms\UploadForm;
 use domain\services\IMenuService;
 use domain\services\MenuService;
 use Yii;
@@ -49,14 +50,30 @@ class MenuItemController extends BaseController
      */
     public function actionView($id)
     {
+        $uploadForm = new UploadForm();
+
+        if($uploadForm->load(\Yii::$app->request->post()) && $uploadForm->validate()) {
+            try {
+                $this->menuService->addItemImage($id, $uploadForm);
+                \Yii::$app->session->setFlash('success', 'Item image was successfully added');
+
+            } catch (DomainException $exception) {
+                \Yii::$app->session->setFlash('error', $exception->getMessage());
+            }
+        }
+
         return $this->render('view.twig', [
             'model' => $this->menuService->getItem($id),
+            'uploadForm' => $uploadForm,
             'isActive' => function(Item $item) {
                 return $this->isActive($item);
             },
             'types' => function(Item $item) {
                 $types = $item->getItemTypes();
                 return $types[$item->type];
+            },
+            'thumb' => function(Item $item) {
+                return '<img src="'.$item->img[Item::ITEM_IMAGE_THUMB_MEDIUM].'" />';
             }
         ]);
     }

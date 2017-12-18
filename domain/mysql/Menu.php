@@ -6,6 +6,7 @@ use domain\mysql\queries\MenuQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
+use yiidreamteam\upload\ImageUploadBehavior;
 
 /**
  * This is the model class for table "menu".
@@ -24,9 +25,11 @@ use yii\db\ActiveRecord;
  */
 class Menu extends ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+    const ITEM_IMAGE_ORIGIN = 'origin';
+    const ITEM_IMAGE_THUMB_SMALL = 'thumb_small';
+    const ITEM_IMAGE_THUMB_MEDIUM = 'thumb_medium';
+    const ITEM_IMAGE_THUMB_BIG = 'thumb_big';
+
     public static function tableName()
     {
         return '{{%menu}}';
@@ -44,9 +47,23 @@ class Menu extends ActiveRecord
                 'attribute' => 'title',
                 'slugAttribute' => 'name',
             ],
+            [
+                'class' => ImageUploadBehavior::className(),
+                'attribute' => 'img',
+                'createThumbsOnRequest' => true,
+                'filePath' => '@staticRoot/origin/menu/[[id]].[[extension]]',
+                'fileUrl' => '@static/origin/menu/[[id]].[[extension]]',
+                'thumbPath' => '@staticRoot/cache/menu/[[profile]]_[[id]].[[extension]]',
+                'thumbUrl' => '@static/cache/menu/[[profile]]_[[id]].[[extension]]',
+                'thumbs' => [
+                    self::ITEM_IMAGE_ORIGIN => ['width' => 800, 'height' => 600],
+                    self::ITEM_IMAGE_THUMB_SMALL => ['width' => 57, 'height' => 57],
+                    self::ITEM_IMAGE_THUMB_MEDIUM => ['width' => 150, 'height' => 150],
+                    self::ITEM_IMAGE_THUMB_BIG => ['width' => 640, 'height' => 480],
+                ],
+            ],
         ];
     }
-
 
     public function transactions()
     {
@@ -54,21 +71,6 @@ class Menu extends ActiveRecord
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['title'], 'required'],
-            [['type', 'relation', 'depth', 'rgt', 'lft', 'status'], 'integer'],
-            [['title', 'description', 'img'], 'string', 'max' => 255],
-            [['name'], 'string', 'max' => 32],
-            [['name'], 'unique'],
-        ];
-    }
-
 
     /**
      * @inheritdoc

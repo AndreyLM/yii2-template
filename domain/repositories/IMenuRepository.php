@@ -12,6 +12,7 @@ namespace domain\repositories;
 use domain\entities\menu\Item;
 use domain\entities\menu\Menu;
 use domain\exceptions\DomainException;
+use domain\forms\UploadForm;
 use yii\web\NotFoundHttpException;
 
 interface IMenuRepository
@@ -53,4 +54,10 @@ interface IMenuRepository
      *  @return int
      */
     public function saveMenuItem(Item $item);
+
+    /* @param $id int
+     * @param $uploadForm UploadForm
+     * @throws \RuntimeException
+     * @return bool */
+    public function addItemImage($id, $uploadForm);
 }

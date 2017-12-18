@@ -12,6 +12,10 @@ return [
     'bootstrap' => ['log', 'common\bootstrap\SetUp'],
     'controllerNamespace' => 'frontend\controllers',
     'layout' => 'main.twig',
+    'aliases' => [
+        '@staticRoot' => $params['staticPath'],
+        '@static'   => $params['staticHostInfo'],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
