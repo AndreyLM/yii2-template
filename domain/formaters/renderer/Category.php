@@ -22,12 +22,13 @@ class Category implements ICompositeItem
 
     public function render()
     {
-        $output = 'Category: '. $this->title;
+        $output = '<ul><li><h4>'. $this->title.'</h4>';
         /* @var $item ICompositeItem*/
         foreach ($this->items as $item)
         {
             $output .= $item->render();
         }
+        $output.='</li></ul>';
 
         return $output;
     }

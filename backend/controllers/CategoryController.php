@@ -112,12 +112,11 @@ class CategoryController extends BaseController
 
     private function save(Category $model, Meta $meta, $view = 'create')
     {
-        $categoriesList = $this->categoryService
-            ->format(new ArrayListCategoryFormatter(), $this->categoryService->getAll());
 
         if($id = $this->load($model, $meta)) {
             \Yii::$app->session->setFlash('success',
                 'Category '.$id.' was successfully '.$view.'ed');
+
             return $this->redirect([
                 'view',
                 'id' => $id
@@ -127,7 +126,8 @@ class CategoryController extends BaseController
         return $this->render($view.'.twig', [
             'model' => $model,
             'meta' => $meta,
-            'list' => $categoriesList
+            'list' => $this->categoryService
+                ->format(new ArrayListCategoryFormatter(), $this->categoryService->getAll())
         ]);
     }
 

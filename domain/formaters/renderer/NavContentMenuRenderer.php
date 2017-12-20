@@ -43,7 +43,6 @@ class NavContentMenuRenderer implements IMenuRenderer
         }
 
         $root = $this->load($categoryId);
-        echo var_dump($this->categories); die;
         return $root->render();
     }
 

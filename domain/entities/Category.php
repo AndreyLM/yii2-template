@@ -39,7 +39,7 @@ class Category extends Model
     public function rules()
     {
         return [
-            [['title', 'name', 'parentId'], 'required'],
+            [['title', 'parentId'], 'required'],
             [['parentId', 'status'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],

@@ -20,6 +20,6 @@ class Article implements ICompositeItem
 
     public function render()
     {
-        return 'Article: '. $this->title;
+        return '<li>'. $this->title.'</li>';
     }
 }

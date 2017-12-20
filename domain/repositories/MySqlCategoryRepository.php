@@ -19,13 +19,7 @@ class MySqlCategoryRepository implements ICategoryRepository
 
     public function save(Category $category)
     {
-        $category->id ?
-            $arCategory = $this->find($category->id) :
-            $arCategory = new ARCategory();
-
-
-
-        $this->mapToActiveRecord($category, $arCategory);
+        $arCategory = $this->mapToActiveRecord($category);
 
         if($category->parentId !== $arCategory->parent->id && $category->id !== 1)
         {
@@ -97,17 +91,25 @@ class MySqlCategoryRepository implements ICategoryRepository
         $category->name = $arCategory->name;
         $category->status = $arCategory->status;
         $category->lvl = $arCategory->depth;
+        $category->parentId = $arCategory->parent->id;
 
         return $category;
     }
 
-    private function mapToActiveRecord(Category $category, ARCategory $arCategory)
+    private function mapToActiveRecord(Category $category)
     {
+        $category->id ?
+            $arCategory = $this->find($category->id) :
+            $arCategory = new ARCategory();
+
         $arCategory->title = $category->title;
         $arCategory->meta = $category->getMeta();
         $arCategory->description = $category->description;
         $arCategory->name = $category->name;
         $arCategory->status = $category->status;
+
+
+        return $arCategory;
     }
 
     /* @param $id int

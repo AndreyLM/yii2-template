@@ -35,7 +35,7 @@ class Item extends Menu
     {
         return [
             [['title', 'parentId'], 'required'],
-            [['type', 'relation', 'depth', 'status'], 'integer'],
+            [['type', 'relation', 'depth', 'status', 'parentId'], 'integer'],
             [['title', 'description', 'img'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
         ];
