@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use domain\formaters\NavMenuFormatter;
+use domain\services\IConfigService;
 use domain\services\IMenuService;
 use yii\base\Module;
 use yii\web\Controller;
@@ -18,12 +19,19 @@ class SuperController extends Controller
 {
     public $headerMenu;
     protected $menuService;
+    protected $configService;
 
-    public function __construct($id, Module $module, IMenuService $menuService, array $config = [])
+    public function __construct($id, Module $module, IMenuService $menuService, IConfigService $configService, array $config = [])
     {
         $this->menuService = $menuService;
-        $menu = $this->menuService->getMenu(IMenuService::MENU_HEADER);
-        $this->headerMenu = $menuService->format(new NavMenuFormatter(), $menu->id);
+        $this->configService = $configService;
+        $this->customSettings();
         parent::__construct($id, $module, $config);
+    }
+
+    private function customSettings()
+    {
+        $setting = $this->configService->getOne(IConfigService::HEADER_MENU);
+        $this->headerMenu = $this->menuService->format(new NavMenuFormatter(), $setting->value);
     }
 }

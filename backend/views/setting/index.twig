@@ -1,0 +1,23 @@
+{{ use('yii/widgets/ActiveForm') }}
+{{ use('yii/widgets/DetailView') }}
+
+{{ set(this, 'title', 'Settings') }}
+{{ set(this, 'params', { 'breadcrumbs' : [
+	{ 'label': this.title }
+	] }) }}
+
+
+<div class="settings-form">
+	{% set form = active_form_begin() %}
+		{% for setting in settings %}
+			{% if setting.options is not null %}
+				{{ form.field(setting, '['~(loop.index-1)~']value').dropDownList(setting.options).label(setting.title) | raw }}
+			{% else %}
+				{{ form.field(setting, '['~(loop.index-1)~']value').input().label(setting.title) | raw }}
+			{% endif %}
+		{% endfor %}
+		{{ html.submitButton('Save', {'class' : 'btn btn-success'}) | raw }}
+	{{ active_form_end() }}
+
+</div>
+

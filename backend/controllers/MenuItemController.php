@@ -73,7 +73,8 @@ class MenuItemController extends BaseController
                 return $types[$item->type];
             },
             'thumb' => function(Item $item) {
-                return '<img src="'.$item->img[Item::ITEM_IMAGE_THUMB_MEDIUM].'" />';
+                return  '<a href="#"><icon class="fa fa-close fa-lg"></icon></a><br>'.
+                    '<img src="'.$item->img[Item::ITEM_IMAGE_THUMB_MEDIUM].'" />';
             }
         ]);
     }
@@ -122,13 +123,16 @@ class MenuItemController extends BaseController
 
     private function save(int $menuId, Item $model, $view = 'create')
     {
+        $uploadForm = new UploadForm();
+
         if(!$model->id) {
             $model->menu = $this->menuService->getMenu($menuId);
         }
 
         if ($model->load(Yii::$app->request->post())) {
             try {
-                $id = $this->menuService->saveMenuItem($model);
+                $uploadForm->load(Yii::$app->request->post());
+                $id = $this->menuService->saveMenuItem($model, $uploadForm);
                 Yii::$app->session->setFlash('success',
                     'Item was successfully '.$view.'d');
                 return $this->redirect(['view', 'id' => $id]);
@@ -138,9 +142,11 @@ class MenuItemController extends BaseController
 
         }
 
+
         return $this->render($view.'.twig', [
             'model' => $model,
-            'list' => $this->menuService->format(new ArrayListMenuItemsFormatter(), $menuId)
+            'list' => $this->menuService->format(new ArrayListMenuItemsFormatter(), $menuId),
+            'uploadForm' => $uploadForm
         ]);
     }
 
@@ -149,4 +155,19 @@ class MenuItemController extends BaseController
         return $item->status ? '<i class="fa fa-check-circle-o fa-1g"></i>' :
             '<i class="fa fa-circle-o fa-1g"></i>';
     }
+
+//    private function uploadImg()
+//    {
+//        $uploadForm = new UploadForm();
+//
+//        if($uploadForm->load(\Yii::$app->request->post()) && $uploadForm->validate()) {
+//            try {
+//                $this->galleryService->addPhotos($gallery->id, $photoUploadForm);
+//                \Yii::$app->session->setFlash('success', 'Photos were successfully uploaded');
+//
+//            } catch (DomainException $exception) {
+//                \Yii::$app->session->setFlash('error', $exception->getMessage());
+//            }
+//        }
+//    }
 }

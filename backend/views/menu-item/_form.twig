@@ -1,8 +1,13 @@
 {{ use('yii/widgets/ActiveForm') }}
+{{ use('kartik/file/FileInput') }}
 
 <div class="menu-form">
 	
-	{% set form=active_form_begin() %}
+	{% set form=active_form_begin({
+		'options' : {
+			'enctype' : 'multipart/form-data'
+		}
+	}) %}
 	
 	{{ form.field(model, 'title').textInput({ 'maxlength' : true }) | raw }}
 	
@@ -18,7 +23,13 @@
 	
 	{{ form.field(model, 'status').checkbox() | raw }}
 	
-	{{ form.field(model, 'img').textInput({ 'maxlength' : true }) | raw }}
+	
+	{{ form.field(uploadForm, 'files[]').label(false).widget('kartik\\file\\FileInput', {
+		'options' : {
+			'accept' : 'image/*',
+			'multiple' : false,
+		}
+	}) | raw }}
 	
 	<div class="form-group">
 		{{ html.submitButton('Save', { 'class' : 'btn btn-success' }) | raw }}

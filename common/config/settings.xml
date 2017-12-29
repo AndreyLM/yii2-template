@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<settings>
+  <setting>
+    <title>Header menu</title>
+    <value>2</value>
+    <type>menu</type>
+  </setting>
+  <setting>
+    <title>Frontend main-page menu</title>
+    <value>13</value>
+    <type>menu</type>
+  </setting>
+  <setting>
+    <title>Background image</title>
+    <value></value>
+    <type>bg-image</type>
+  </setting>
+</settings>

@@ -95,12 +95,13 @@ class MenuService implements IMenuService
     }
 
     /* @param $item Item
+     * @param $uploadForm UploadForm
      * @throws DomainException
      * @return int
      */
-    public function saveMenuItem(Item $item)
+    public function saveMenuItem(Item $item, UploadForm $uploadForm = null)
     {
-        return $this->menuRepository->saveMenuItem($item);
+        return $this->menuRepository->saveMenuItem($item, $uploadForm);
     }
 
     /* @param $formatter IMenuFormatter

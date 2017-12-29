@@ -2,6 +2,7 @@
 
 namespace domain\mysql;
 
+use common\models\User;
 use domain\mysql\behaviors\MetaBehavior;
 use domain\mysql\queries\ArticleQuery;
 use yii\behaviors\SluggableBehavior;
@@ -77,6 +78,14 @@ class Article extends ActiveRecord
         ];
     }
 
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
     /**
      * @inheritdoc
      * @return ArticleQuery the active query used by this AR class.

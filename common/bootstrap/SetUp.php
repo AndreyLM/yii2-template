@@ -19,11 +19,13 @@ class SetUp implements BootstrapInterface
         $container->setSingleton('domain\services\ICategoryService', 'domain\services\CategoryService');
         $container->setSingleton('domain\services\IGalleryService', 'domain\services\GalleryService');
         $container->setSingleton('domain\services\IMenuService', 'domain\services\MenuService');
+        $container->setSingleton('domain\services\IConfigService', 'domain\services\ConfigService');
 
         $container->setSingleton('domain\repositories\IArticleRepository', 'domain\repositories\MySqlArticleRepository');
         $container->setSingleton('domain\repositories\ICategoryRepository', 'domain\repositories\MySqlCategoryRepository');
         $container->setSingleton('domain\repositories\IGalleryRepository', 'domain\repositories\MySqlGalleryRepository');
         $container->setSingleton('domain\repositories\IMenuRepository', 'domain\repositories\MySqlMenuRepository');
+
 
 
     }

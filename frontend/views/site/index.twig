@@ -1,7 +1,15 @@
 {{ set(this, 'title', 'Knowledge') }}
 
 <div class="site-index">
-{% for item in menu.items %}
-	<p>{{ item.title }}</p>
-{% endfor %}
+	<div class="row">
+		{% for item in menu.items %}
+			<div class="front-menu-item col-md-3">
+				<div class="front-menu-item-img">
+					<img src="{{ item.img['thumb_medium'] }}" alt="" />
+				</div>
+				<div class="front-menu-item-content"><p>1 {{ item.title }}</p></div>
+			</div>
+		
+		{% endfor %}
+	</div>
 </div>

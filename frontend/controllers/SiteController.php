@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use domain\services\IConfigService;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -72,7 +73,9 @@ class SiteController extends SuperController
      */
     public function actionIndex()
     {
-        $menu = $this->menuService->getFullMenuItems(13);
+        $menuConfig = $this->configService->getOne(IConfigService::FRONT_MENU);
+        $menu = $this->menuService->getFullMenuItems($menuConfig->value);
+
 
         return $this->render('index.twig', [
             'menu' => $menu

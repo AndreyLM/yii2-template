@@ -1,0 +1,15 @@
+.front-menu-item {
+    position: relative;
+}
+
+.front-menu-item-img, .front-menu-item-img>img{
+    width: 100% ;
+    height: 100%;
+}
+
+.front-menu-item-content {
+    position: static;
+    width: 60%;
+    height: 60%;
+    top: auto;
+}
