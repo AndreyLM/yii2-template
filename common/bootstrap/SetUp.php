@@ -15,7 +15,7 @@ class SetUp implements BootstrapInterface
     {
         $container = \Yii::$container;
 
-        $container->setSingleton('domain\services\IArticleService', 'domain\services\ArticleService');
+        $container->setSingleton('domain\services\IArticleService', 'domain\services\ArticleMySqlElasticService');
         $container->setSingleton('domain\services\ICategoryService', 'domain\services\CategoryService');
         $container->setSingleton('domain\services\IGalleryService', 'domain\services\GalleryService');
         $container->setSingleton('domain\services\IMenuService', 'domain\services\MenuService');

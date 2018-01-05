@@ -10,10 +10,32 @@ namespace domain\services;
 
 
 use domain\entities\Article;
+use domain\entities\searches\ActiveRecordArticleSearch;
+use domain\entities\searches\BaseArticleSearch;
+use domain\entities\searches\ElasticArticleSearch;
+use domain\exceptions\DomainException;
+use domain\formaters\ArrayListCategoryFormatter;
+use domain\formaters\IArticleFormatter;
+use domain\repositories\ElasticArticleRepository;
+use domain\repositories\IArticleRepository;
+use domain\repositories\MySqlArticleRepository;
+use yii\data\ArrayDataProvider;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 
 class ArticleMySqlElasticService implements IArticleService
 {
+
+    /* @var IArticleRepository*/
+    private $elasticRepository;
+    /* @var IArticleRepository*/
+    private $mySqlRepository;
+
+    public function __construct()
+    {
+        $this->mySqlRepository = new MySqlArticleRepository();
+        $this->elasticRepository = new ElasticArticleRepository();
+    }
 
     /* @param $article Article
      * @throws \RuntimeException
@@ -21,13 +43,25 @@ class ArticleMySqlElasticService implements IArticleService
      */
     public function save(Article $article)
     {
-        // TODO: Implement save() method.
+        if($this->validate($article))
+            return $this->mySqlRepository->save($article);
+
+        return false;
     }
 
-    /* @return \domain\entities\Article[] */
+    /* @return \domain\entities\Article[]*/
     public function getAll(): array
     {
-        // TODO: Implement getAll() method.
+        return $this->elasticRepository->getAll();
+    }
+
+    /* @param $articles \domain\entities\Article[]
+     * @param $articleFormatter
+     * @return mixed
+     * */
+    public function format(IArticleFormatter $articleFormatter, array $articles)
+    {
+        return $articleFormatter->format($articles);
     }
 
     /* @param $id int
@@ -36,15 +70,25 @@ class ArticleMySqlElasticService implements IArticleService
      */
     public function getOne($id): Article
     {
-        // TODO: Implement getOne() method.
+        return $this->mySqlRepository->get($id);
     }
 
     /* @param $id int
+     * @throws DomainException
      * @return bool
      * */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return $this->mySqlRepository->delete($id);
+    }
+
+    public function validate(Article $article)
+    {
+        if(!$article->validate() || !$article->getMeta()->validate()) {
+            return false;
+        }
+
+        return true;
     }
 
     /* @param $categoryService ICategoryService
@@ -52,7 +96,8 @@ class ArticleMySqlElasticService implements IArticleService
      * */
     public function getCategoryList(ICategoryService $categoryService)
     {
-        // TODO: Implement getCategoryList() method.
+        $categories = $categoryService->getAll();
+        return $categoryService->format(new ArrayListCategoryFormatter(), $categories);
     }
 
     /* @param $categoryId int
@@ -60,6 +105,16 @@ class ArticleMySqlElasticService implements IArticleService
      */
     public function getByCategoryId($categoryId)
     {
-        // TODO: Implement getByCategoryId() method.
+        return $this->mySqlRepository->getByCategoryId($categoryId);
+    }
+
+    public function synchronize() {
+        $this->elasticRepository->import($this->mySqlRepository);
+    }
+
+    /* @return BaseArticleSearch */
+    public function getSearchModel()
+    {
+        return new ActiveRecordArticleSearch();
     }
 }

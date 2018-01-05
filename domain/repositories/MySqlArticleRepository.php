@@ -31,10 +31,11 @@ class MySqlArticleRepository implements IArticleRepository
     }
 
     /* @param $article Article
+     * @param $categoryTitle string
      * @throws \RuntimeException
      * @return int
      */
-    public function save(Article $article)
+    public function save(Article $article, $categoryTitle = '')
     {
         $article->id ?
             $arArticle = $this->find($article->id) :
@@ -153,5 +154,10 @@ class MySqlArticleRepository implements IArticleRepository
         }
 
         return $articles;
+    }
+
+    public function import(IArticleRepository $articleRepository)
+    {
+        throw new DomainException('This method is not implemented');
     }
 }

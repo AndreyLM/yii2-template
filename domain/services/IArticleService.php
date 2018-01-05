@@ -10,6 +10,9 @@ namespace domain\services;
 
 
 use domain\entities\Article;
+use domain\entities\searches\BaseArticleSearch;
+use domain\exceptions\DomainException;
+use yii\data\ArrayDataProvider;
 use yii\web\NotFoundHttpException;
 
 interface IArticleService
@@ -42,4 +45,12 @@ interface IArticleService
     /* @param $categoryId int
      * @return array | null*/
     public function getByCategoryId($categoryId);
+
+    /* @throws DomainException
+     * @return bool
+    */
+    public function synchronize();
+
+    /* @return BaseArticleSearch */
+    public function getSearchModel();
 }

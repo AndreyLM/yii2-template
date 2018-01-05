@@ -21,11 +21,12 @@ interface IArticleRepository
      * */
     public function delete($id);
 
-    /* @param $category Article
+    /* @param $article Article
+     * @param $categoryTitle string
      * @throws DomainException
      *  @return int
      */
-    public function save(Article $category);
+    public function save(Article $article, $categoryTitle = '');
 
     /* @param $id int
      * @throws NotFoundHttpException
@@ -41,4 +42,7 @@ interface IArticleRepository
     /* @param $categoryId int
      * @return array | null*/
     public function getByCategoryId($categoryId);
+
+    /* Rewrite all your data with new one */
+    public function import(IArticleRepository $articleRepository);
 }

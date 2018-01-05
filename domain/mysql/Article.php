@@ -8,7 +8,7 @@ use domain\mysql\queries\ArticleQuery;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
+
 
 /**
  * This is the model class for table "article".

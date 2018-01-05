@@ -9,6 +9,7 @@
 
 	{{  pjax_begin() }}
 	<p>
+		{{  html.a('Synchronize data', path(['synchronization']), {'class' : 'btn btn-primary'}) | raw }}
 		{{  html.a('Create Article', path(['create']), { 'class' : 'btn btn-success'}) | raw }}
 	</p>
 	
@@ -21,14 +22,14 @@
 		},
 		'id',
 		'title',
-		'category_id',
+		'category',
 		'author',
-		
+		'creator',
 		'status',
 		'favorite',
-		'created_at',
-		'updated_at',
-		'publishing_at',
+		'createdAt',
+		'updatedAt',
+		'publishingAt',
 		],
 	}) }}
 	{{  pjax_end() }}

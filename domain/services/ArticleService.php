@@ -10,11 +10,14 @@ namespace domain\services;
 
 
 use domain\entities\Article;
+use domain\entities\searches\ActiveRecordArticleSearch;
+use domain\entities\searches\BaseArticleSearch;
 use domain\formaters\ArrayListCategoryFormatter;
 use domain\formaters\IArticleFormatter;
 use domain\repositories\IArticleRepository;
 use domain\repositories\MySqlArticleRepository;
 use DomainException;
+use yii\data\ArrayDataProvider;
 use yii\web\NotFoundHttpException;
 
 class ArticleService implements IArticleService
@@ -95,5 +98,19 @@ class ArticleService implements IArticleService
     public function getByCategoryId($categoryId)
     {
         return $this->articleRepository->getByCategoryId($categoryId);
+    }
+
+    /* @throws \domain\exceptions\DomainException
+     * @return bool
+     */
+    public function synchronize()
+    {
+        // TODO: Implement synchronize() method.
+    }
+
+    /* @return BaseArticleSearch */
+    public function getSearchModel()
+    {
+        return new ActiveRecordArticleSearch();
     }
 }

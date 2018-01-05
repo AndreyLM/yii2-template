@@ -3,12 +3,11 @@
 namespace backend\controllers;
 
 use domain\entities\Meta;
-use domain\services\CategoryService;
 use domain\services\IArticleService;
 use DomainException;
 use Yii;
 use domain\entities\Article;
-use domain\mysql\searches\ArticleSearch;
+use domain\entities\searches\BaseArticleSearch;
 use yii\base\Module;
 
 /**
@@ -31,13 +30,25 @@ class ArticleController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new ArticleSearch();
+        $searchModel = $this->articleService->getSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionSynchronization()
+    {
+        try {
+            $this->articleService->synchronize();
+            \Yii::$app->session->setFlash('success', 'Synchronization was done successfully');
+        } catch (DomainException $exception) {
+            \Yii::$app->session->setFlash('error', 'Problem with synchronization data');
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**

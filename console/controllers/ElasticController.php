@@ -10,6 +10,7 @@ namespace console\controllers;
 
 use domain\mysql\Article;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use yii\base\Module;
 use yii\console\Controller;
 
@@ -92,13 +93,17 @@ class ElasticController extends Controller
         }
     }
 
-    public function deleteArticleIndex()
+    public function actionDeleteArticleIndex()
     {
 
-
-        $response = $this->client->indices()->delete([
-            'index' => self::ARTICLE_INDEX
-        ]);
+        try {
+            $response = $this->client->indices()->delete([
+                'index' => self::ARTICLE_INDEX
+            ]);
+        } catch (Missing404Exception $exception)
+        {
+            $this->stdout($exception->getMessage());
+        }
 
         $this->stdout(var_dump($response));
     }
@@ -177,5 +182,7 @@ class ElasticController extends Controller
         $client->setHosts(['elasticsearch:9200']);
         $this->client = $client->build();
     }
+
+
 
 }
